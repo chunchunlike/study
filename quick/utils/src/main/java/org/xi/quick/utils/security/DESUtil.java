@@ -1,6 +1,6 @@
 package org.xi.quick.utils.security;
 
-import org.xi.quick.text.HexUtil;
+import org.xi.quick.utils.text.HexUtil;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

@@ -1,4 +1,4 @@
-package org.xi.quick.text;
+package org.xi.quick.utils.text;
 
 import java.io.ByteArrayOutputStream;
 
