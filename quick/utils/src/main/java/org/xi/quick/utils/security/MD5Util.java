@@ -8,6 +8,11 @@ import java.security.MessageDigest;
  */
 public class MD5Util {
 
+    /**
+     * 加密方法
+     * @param str
+     * @return
+     */
     public static String encrypt(String str) {
 
         try {

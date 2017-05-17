@@ -85,6 +85,7 @@ public class HexUtil {
         }
         return memoryStream.toByteArray();
     }
+
     public static String fromHex(String input, String encoding) {
         try {
             byte[] hexData = input.getBytes(encoding);

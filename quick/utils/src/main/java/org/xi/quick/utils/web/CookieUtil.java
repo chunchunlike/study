@@ -13,27 +13,21 @@ public class CookieUtil {
 
     private final HttpServletRequest request;
     private final HttpServletResponse response;
-    private final int timeout = 30 * 24 * 60 * 60;
-    private final Cookie[] cookies;
-    private final Map<String, Cookie> cookieMap;
+    private final int timeout;
 
     public CookieUtil(HttpServletRequest request, HttpServletResponse response) {
 
         this.request = request;
         this.response = response;
-
-        cookieMap = new HashMap<String, Cookie>();
-        cookies = request.getCookies();
-
-        if (null != cookies) {
-            for (Cookie cookie : cookies) {
-                cookieMap.put(cookie.getName(), cookie);
-            }
-        }
+        timeout = 30 * 24 * 60 * 60;
     }
 
+    /**
+     * 获取cookieMap
+     * @return
+     */
     public Map<String, Cookie> getCookieMap() {
-        Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
+        Map<String, Cookie> cookieMap = new HashMap<>();
         Cookie[] cookies = request.getCookies();
 
         if (null != cookies) {
@@ -45,22 +39,67 @@ public class CookieUtil {
         return cookieMap;
     }
 
-    public Cookie[] getAllCookies() {
+    /**
+     * 获取cookie值的Map
+     * @return
+     */
+    public Map<String, String> getCookieValueMap() {
+        Map<String, String> cookieMap = new HashMap<>();
+        Cookie[] cookies = request.getCookies();
 
-        return request.getCookies();
+        if (null != cookies) {
+            for (Cookie cookie : cookies) {
+                cookieMap.put(cookie.getName(), cookie.getValue());
+            }
+        }
+
+        return cookieMap;
     }
 
-    public void addCookie(String name, String value) {
+    /**
+     * 设置cookie
+     * @param name  cookie名称
+     * @param value cookie值
+     */
+    public void setCookie(String name, String value) {
 
-        addCookie(name, value, "/", timeout);
+        Cookie cookie = getCookie(name);
+
+        if (null != cookie) {
+            cookie.setValue(value);
+            response.addCookie(cookie);
+        } else {
+            setCookie(name, value, "/", timeout);
+        }
     }
 
-    public void addCookie(String name, String value, String path) {
+    /**
+     * 设置cookie
+     * @param name  cookie名称
+     * @param value cookie值
+     * @param path  cookie路径
+     */
+    public void setCookie(String name, String value, String path) {
 
-        addCookie(name, value, path, timeout);
+        Cookie cookie = getCookie(name);
+
+        if (null != cookie) {
+            cookie.setValue(value);
+            cookie.setPath(path);
+            response.addCookie(cookie);
+        } else {
+            setCookie(name, value, path, timeout);
+        }
     }
 
-    public void addCookie(String name, String value, String path, int timeout) {
+    /**
+     *  设置cookie
+     * @param name      cookie名称
+     * @param value     cookie值
+     * @param path      cookie路径
+     * @param timeout   cookie过期时长
+     */
+    public void setCookie(String name, String value, String path, int timeout) {
 
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(timeout);
@@ -69,6 +108,10 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
+    /**
+     * 删除cookie
+     * @param name  cookie名称
+     */
     public void delCookie(String name) {
 
         Cookie cookie = getCookie(name);
@@ -79,49 +122,60 @@ public class CookieUtil {
         }
     }
 
+    /**
+     * 删除cookie
+     * @param names cookie名称数组
+     */
     public void delCookies(String[] names) {
 
+        Map<String, Cookie> cookieMap = getCookieMap();
         for (String name : names) {
-            delCookie(name);
+            if(cookieMap.containsKey(name)) {
+                Cookie cookie = cookieMap.get(name);
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
         }
     }
 
-    public void delAllCookies() {
+    /**
+     * 清理cookie
+     */
+    public void clearCookies() {
 
+        Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
     }
 
-    public void editCookie(String name, String value) {
-
-        Cookie cookie = getCookie(name);
-
-        if (null != cookie) {
-            cookie.setValue(value);
-            response.addCookie(cookie);
-        } else {
-            addCookie(name, value);
-        }
-    }
-
+    /**
+     * 获取cookie
+     * @param name  cookie名称
+     * @return
+     */
     public Cookie getCookie(String name) {
 
-        if (cookieMap.containsKey(name)) {
-            return cookieMap.get(name);
-        } else {
-            return null;
+        Cookie[] cookies = request.getCookies();
+
+        if (null != cookies) {
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals(name)) return cookie;
+            }
         }
+        return null;
     }
 
+    /**
+     * 获取cookie的值
+     * @param name  cookie名称
+     * @return
+     */
     public String getCookieValue(String name) {
 
-        if (cookieMap.containsKey(name)) {
-            return cookieMap.get(name).getValue();
-        } else {
-            return null;
-        }
+        Cookie cookie = getCookie(name);
+        return null == cookie ? null : cookie.getValue();
     }
 
 }

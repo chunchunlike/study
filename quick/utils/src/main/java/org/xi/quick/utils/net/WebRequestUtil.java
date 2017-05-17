@@ -90,7 +90,7 @@ public class WebRequestUtil {
         url = getUrl(url, parameters);
 
         HttpURLConnection conn = (HttpURLConnection) (new URL(url)).openConnection();
-        if (headers != null && headers.size() > 0) {
+        if (null != headers && headers.size() > 0) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 conn.setRequestProperty(entry.getKey(), entry.getValue());
             }
@@ -102,7 +102,7 @@ public class WebRequestUtil {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-            if (postBody != null && !postBody.isEmpty()) {
+            if (!StringUtil.isNullOrWhiteSpace(postBody)) {
                 byte[] postBodyBytes = postBody.getBytes(encoding);
 
                 try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
@@ -203,18 +203,18 @@ public class WebRequestUtil {
 
         if (type == RequestType.POST) {
             HttpPost httpPost = new HttpPost(url);
-            if (headers != null && headers.size() > 0) {
+            if (null != headers && headers.size() > 0) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     httpPost.addHeader(entry.getKey(), entry.getValue());
                 }
             }
-            if (postBody != null && !postBody.isEmpty()) {
+            if (!StringUtil.isNullOrWhiteSpace(postBody)) {
                 httpPost.setEntity(new StringEntity(postBody, encoding));
             }
             response = client.execute(httpPost);
         } else {
             HttpGet httpGet = new HttpGet(url);
-            if (headers != null && headers.size() > 0) {
+            if (null != headers && headers.size() > 0) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     httpGet.addHeader(entry.getKey(), entry.getValue());
                 }
@@ -227,6 +227,12 @@ public class WebRequestUtil {
 
     //endregion
 
+    /**
+     * 获取路径
+     * @param url            文件夹路径
+     * @param parameters    路径参数
+     * @return
+     */
     private static String getUrl(String url, Map<String, String> parameters) {
 
         if (url == null || url.isEmpty()) return "";
