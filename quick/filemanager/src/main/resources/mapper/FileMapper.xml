@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.xi.quick.usermanager.mapper.FileMapper">
+<mapper namespace="org.xi.quick.filemanager.mapper.FileMapper">
 
-	<resultMap id="fileMap" type="org.xi.quick.usermanager.entity.FileEntity">
+	<resultMap id="fileMap" type="org.xi.quick.filemanager.entity.FileEntity">
 		<id column="file_id" property="fileId" jdbcType="INTEGER" />
 		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
 		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
         <result column="user_id" property="userId" jdbcType="INTEGER" />
 	</resultMap>
 
-	<insert id="insert" parameterType="org.xi.quick.usermanager.entity.FileEntity" useGeneratedKeys="true" keyProperty="fileId">
+	<insert id="insert" parameterType="org.xi.quick.filemanager.entity.FileEntity" useGeneratedKeys="true" keyProperty="fileId">
 		insert into file(parent_id, file_name, file_path, file_type, suffix, user_id)
 		values(#{parentId}, #{fileName}, #{filePath}, #{fileType}, #{suffix}, #{userId})
 	</insert>
@@ -24,7 +24,7 @@
 		update file set status=-1 where file_id=#{fileId}
 	</delete>
 
-	<update id="update" parameterType="org.xi.quick.usermanager.entity.FileEntity">
+	<update id="update" parameterType="org.xi.quick.filemanager.entity.FileEntity">
 		update file
 		<set>
 			<if test="parentId != null">

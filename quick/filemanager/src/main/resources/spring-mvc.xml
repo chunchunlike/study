@@ -42,8 +42,14 @@
 
 	<bean id="viewResolver"
 		  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
 		<property name="suffix" value=".ftl"></property>
 		<property name="contentType" value="text/html;charset=UTF-8"></property>
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="requestContextAttribute" value="request" />
+		<property name="cache" value="true" />
 	</bean>
 
 	<!--配置一个数据源，使用spring提供的数据源 -->
@@ -54,7 +60,7 @@
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.xi.quick.usermanager.mapper" />
+		<property name="basePackage" value="org.xi.quick.filemanager.mapper" />
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />

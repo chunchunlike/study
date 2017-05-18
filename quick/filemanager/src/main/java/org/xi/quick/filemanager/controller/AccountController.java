@@ -36,7 +36,7 @@ public class AccountController {
 	private void initCookieHelper(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
-		CookieUtil cookieUtil = new CookieUtil(request, response);
+		cookieUtil = new CookieUtil(request, response);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)

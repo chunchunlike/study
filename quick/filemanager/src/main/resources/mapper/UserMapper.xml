@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.xi.quick.usermanager.mapper.UserMapper">
+<mapper namespace="org.xi.quick.filemanager.mapper.UserMapper">
 
-  <resultMap id="userMap" type="org.xi.quick.usermanager.entity.UserEntity">
+  <resultMap id="userMap" type="org.xi.quick.filemanager.entity.UserEntity">
         <id column="user_id" property="userId" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
@@ -12,7 +12,7 @@
         <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
-    <insert id="insert" parameterType="org.xi.quick.usermanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="fileId">
+    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="fileId">
         insert into user(username, password, email, phone)
         values(#{username}, #{password}, #{email}, #{phone})
     </insert>
@@ -21,7 +21,7 @@
         update user set status=-1 where user_id=#{userId}
     </delete>
 
-    <update id="update" parameterType="org.xi.quick.usermanager.entity.UserEntity">
+    <update id="update" parameterType="org.xi.quick.filemanager.entity.UserEntity">
         update user
         <set>
             <if test="password != null">
