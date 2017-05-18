@@ -1,0 +1,36 @@
+.center-img-container {
+    position: relative;
+    margin: 10px auto;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    border: 1px solid #dcbaff;
+}
+
+.center-img-container img {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.center-img-container2 {
+    position: relative;
+    margin: 10px auto;
+    width: 800px;
+    height: 500px;
+    overflow: hidden;
+    border: 1px solid #dcbaff;
+}
+
+.center-img-container2 img {
+    position: absolute;
+    margin: auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

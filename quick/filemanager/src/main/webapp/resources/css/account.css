@@ -1,0 +1,69 @@
+/*login*/
+
+.login-content {
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -200px;
+    background-color: #FFFFFF;
+}
+
+.login-content .title {
+    width: 100%;
+    padding: 10px 5%;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.login-content div {
+    position: relative;
+    width: 100%;
+    padding: 10px 5%;
+}
+
+.login-content input[type="text"],
+.login-content input[type="password"] {
+    width: 100%;
+}
+
+.login-content input[type="submit"] {
+    width: 200px;
+    margin: 3px 0;
+}
+
+/*register*/
+
+.register-content {
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -300px 0 0 -200px;
+    background-color: #FFFFFF;
+}
+
+.register-content .title {
+    width: 100%;
+    padding: 10px 5%;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.register-content div {
+    position: relative;
+    width: 100%;
+    padding: 10px 5%;
+}
+
+.register-content input[type="text"],
+.register-content input[type="password"],
+.register-content input[type="email"] {
+    width: 100%;
+}
+
+.register-content input[type="submit"] {
+    width: 200px;
+    margin: 3px 0;
+}
+
+/*common*/
+

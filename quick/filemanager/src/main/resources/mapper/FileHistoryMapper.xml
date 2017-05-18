@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.xi.quick.usermanager.mapper.FileHistoryMapper">
+
+	<resultMap id="fileHistoryMap" type="org.xi.quick.usermanager.entity.FileHistoryEntity">
+		<id column="file_history_id" property="fileHistoryId" jdbcType="INTEGER" />
+		<result column="file_id" property="fileId" jdbcType="INTEGER" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
+		<result column="file_path" property="filePath" jdbcType="VARCHAR" />
+		<result column="file_type" property="fileType" jdbcType="TINYINT" />
+		<result column="suffix" property="suffix" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="operate_type" property="operateType" jdbcType="TINYINT" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="insert" parameterType="org.xi.quick.usermanager.entity.FileHistoryEntity" useGeneratedKeys="true" keyProperty="fileHistoryId">
+		insert into file_history(file_id, parent_id, file_name, file_path, file_type, suffix, operate_type, user_id)
+		values(#{fileId}, #{parentId}, #{fileName}, #{filePath}, #{fileType}, #{suffix}, #{operateType}, #{userId})
+	</insert>
+
+    <select id="select" resultMap="fileHistoryMap">
+        select * from file_history where file_id=#{fileId}
+    </select>
+
+</mapper>
