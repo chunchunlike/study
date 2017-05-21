@@ -24,6 +24,7 @@ public class CookieUtil {
 
     /**
      * 获取cookieMap
+     *
      * @return
      */
     public Map<String, Cookie> getCookieMap() {
@@ -41,6 +42,7 @@ public class CookieUtil {
 
     /**
      * 获取cookie值的Map
+     *
      * @return
      */
     public Map<String, String> getCookieValueMap() {
@@ -58,6 +60,7 @@ public class CookieUtil {
 
     /**
      * 设置cookie
+     *
      * @param name  cookie名称
      * @param value cookie值
      */
@@ -75,6 +78,7 @@ public class CookieUtil {
 
     /**
      * 设置cookie
+     *
      * @param name  cookie名称
      * @param value cookie值
      * @param path  cookie路径
@@ -93,11 +97,12 @@ public class CookieUtil {
     }
 
     /**
-     *  设置cookie
-     * @param name      cookie名称
-     * @param value     cookie值
-     * @param path      cookie路径
-     * @param timeout   cookie过期时长
+     * 设置cookie
+     *
+     * @param name    cookie名称
+     * @param value   cookie值
+     * @param path    cookie路径
+     * @param timeout cookie过期时长
      */
     public void setCookie(String name, String value, String path, int timeout) {
 
@@ -110,7 +115,8 @@ public class CookieUtil {
 
     /**
      * 删除cookie
-     * @param name  cookie名称
+     *
+     * @param name cookie名称
      */
     public void delCookie(String name) {
 
@@ -124,13 +130,14 @@ public class CookieUtil {
 
     /**
      * 删除cookie
+     *
      * @param names cookie名称数组
      */
     public void delCookies(String[] names) {
 
         Map<String, Cookie> cookieMap = getCookieMap();
         for (String name : names) {
-            if(cookieMap.containsKey(name)) {
+            if (cookieMap.containsKey(name)) {
                 Cookie cookie = cookieMap.get(name);
                 cookie.setMaxAge(0);
                 response.addCookie(cookie);
@@ -152,7 +159,8 @@ public class CookieUtil {
 
     /**
      * 获取cookie
-     * @param name  cookie名称
+     *
+     * @param name cookie名称
      * @return
      */
     public Cookie getCookie(String name) {
@@ -161,7 +169,7 @@ public class CookieUtil {
 
         if (null != cookies) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals(name)) return cookie;
+                if (cookie.getName().equals(name)) return cookie;
             }
         }
         return null;
@@ -169,7 +177,8 @@ public class CookieUtil {
 
     /**
      * 获取cookie的值
-     * @param name  cookie名称
+     *
+     * @param name cookie名称
      * @return
      */
     public String getCookieValue(String name) {

@@ -10,6 +10,7 @@ public class MD5Util {
 
     /**
      * 加密方法
+     *
      * @param str
      * @return
      */

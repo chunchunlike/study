@@ -15,11 +15,10 @@ public class DESUtil {
 
     /**
      * 加密方法
-     * @param input     加解密的字符串
-     * @param password  加密的密码（只能为8位长）
      *
-     * @param encoding
-     *                  字符集
+     * @param input    加解密的字符串
+     * @param password 加密的密码（只能为8位长）
+     * @param encoding 字符集
      * @return
      */
     public static String encrypt(String input, String password, String encoding) {
@@ -38,9 +37,10 @@ public class DESUtil {
     }
 
     /**
+     * 加密方法
      *
-     * @param input     待加密的字符串
-     * @param password  加密的密码（只能为8位长）
+     * @param input    待加密的字符串
+     * @param password 加密的密码（只能为8位长）
      * @return
      */
     public static String encrypt(String input, String password) {
@@ -49,9 +49,10 @@ public class DESUtil {
 
     /**
      * 解密方法
-     * @param input     待解密的字符串
-     * @param password  解密的密码（只能为8位长）
-     * @param encoding  字符集
+     *
+     * @param input    待解密的字符串
+     * @param password 解密的密码（只能为8位长）
+     * @param encoding 字符集
      * @return
      */
     public static String decrypt(String input, String password, String encoding) {
@@ -71,6 +72,7 @@ public class DESUtil {
 
     /**
      * 解密方法
+     *
      * @param input
      * @param password
      * @return

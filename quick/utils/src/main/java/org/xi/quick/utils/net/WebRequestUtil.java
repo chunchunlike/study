@@ -89,7 +89,7 @@ public class WebRequestUtil {
         url = getUrl(url, parameters);
 
         HttpURLConnection conn = (HttpURLConnection) (new URL(url)).openConnection();
-        setHeaders(conn,headers);
+        setHeaders(conn, headers);
 
         if (type == RequestType.POST) {
             conn.setRequestMethod("POST");
@@ -132,7 +132,7 @@ public class WebRequestUtil {
 
         HttpURLConnection conn = (HttpURLConnection) (new URL(url)).openConnection();
         conn.setRequestMethod("GET");
-        setHeaders(conn,headers);
+        setHeaders(conn, headers);
 
         String html = getHtml(conn, encoding);
         conn.disconnect();
@@ -163,7 +163,7 @@ public class WebRequestUtil {
         conn.setDoInput(true);
         conn.setDoOutput(true);
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        setHeaders(conn,headers);
+        setHeaders(conn, headers);
 
         if (!StringUtil.isNullOrWhiteSpace(postBody)) {
             byte[] postBodyBytes = postBody.getBytes(encoding);
@@ -181,6 +181,7 @@ public class WebRequestUtil {
 
     /**
      * 设置Header
+     *
      * @param conn
      * @param headers
      */
@@ -195,6 +196,7 @@ public class WebRequestUtil {
 
     /**
      * 获取响应字符串
+     *
      * @param conn
      * @param encoding
      * @return
@@ -350,6 +352,7 @@ public class WebRequestUtil {
 
     /**
      * 设置Header
+     *
      * @param request
      * @param headers
      */
@@ -364,6 +367,7 @@ public class WebRequestUtil {
 
     /**
      * 获取响应字符串
+     *
      * @param request
      * @param encoding
      * @return
