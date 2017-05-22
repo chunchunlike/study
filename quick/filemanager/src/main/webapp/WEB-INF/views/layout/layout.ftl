@@ -1,4 +1,5 @@
 <#assign contextPath=request.contextPath />
+<#import "/common/spring.ftl" as spring />
 
 <#macro styles></#macro>
 <#macro scripts></#macro>

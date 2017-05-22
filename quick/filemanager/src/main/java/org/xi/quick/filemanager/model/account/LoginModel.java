@@ -1,5 +1,7 @@
 package org.xi.quick.filemanager.model.account;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -8,7 +10,7 @@ public class LoginModel {
     @NotNull
     @Size(min = 4, max = 20, message = "用户名必须在4-20位")
     private String username;
-    
+
     @NotNull
     @Size(min = 6, max = 50, message = "密码必须大于6位")
     private String password;

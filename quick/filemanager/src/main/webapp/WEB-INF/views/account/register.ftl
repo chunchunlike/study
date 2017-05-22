@@ -16,7 +16,7 @@
             </ul>
         </div>
         <!--*/-->
-        <input type="hidden" id="re" name="re" value="${re}" />
+        <input type="hidden" id="re" name="re" value="${re!}" />
         <div>
             <input type="text" id="username" name="username" />
             <span></span>
