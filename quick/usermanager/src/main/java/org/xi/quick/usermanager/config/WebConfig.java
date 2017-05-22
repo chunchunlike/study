@@ -21,12 +21,12 @@ import org.xi.quick.usermanager.interceptor.LoginInterceptor;
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.xi.quick.usermanager.controller")
-@PropertySource(value={"classpath:common.properties"})
+@PropertySource(value = {"classpath:common.properties"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {
-    	ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine);
         viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
@@ -41,15 +41,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
-    	SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
-	
-	@Bean
+
+    @Bean
     public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
@@ -61,13 +61,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public HandlerInterceptor loginInterceptor() {
-    	LoginInterceptor loginInterceptor = new LoginInterceptor();
-		return loginInterceptor;
+        LoginInterceptor loginInterceptor = new LoginInterceptor();
+        return loginInterceptor;
     }
-    
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor()).addPathPatterns("/*","/*/*").excludePathPatterns("/account/login");
+        registry.addInterceptor(loginInterceptor()).addPathPatterns("/**").excludePathPatterns("/resources/**", "/account/login", "/account/register");
     }
-     
+
 }
