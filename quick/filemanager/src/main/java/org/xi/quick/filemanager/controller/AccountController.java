@@ -71,9 +71,10 @@ public class AccountController {
 			cookieUtil.setCookie("ID", entity.getUserId() + "");
 			cookieUtil.setCookie("login", timestamp + "");
 			cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
+			return "redirect:" + re;
 		}
 
-		return "redirect:" + re;
+		return "account/login";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -100,16 +101,15 @@ public class AccountController {
 			cookieUtil.setCookie("ID", userId + "");
 			cookieUtil.setCookie("login", timestamp + "");
 			cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
-		} else {
-			return "account/register";
+			return "redirect:" + re;
 		}
-		
-		return "redirect:" + re;
+		return "account/register";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(@RequestParam(value = "re", defaultValue = "/") String re) {
 
+		cookieUtil.clearCookies();
 		return "redirect:" + re;
 	}
 

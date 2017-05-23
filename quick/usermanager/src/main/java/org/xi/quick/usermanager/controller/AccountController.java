@@ -24,80 +24,83 @@ import org.xi.quick.utils.security.MD5Util;
 import org.xi.quick.utils.web.CookieUtil;
 
 @Controller
-@RequestMapping({ "/account" })
+@RequestMapping({"/account"})
 public class AccountController extends BaseController {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
 
-		String userId = cookieUtil.getCookieValue("ID");
-		String timestamp = cookieUtil.getCookieValue("login");
-		String ss = cookieUtil.getCookieValue("ss");
+        String userId = cookieUtil.getCookieValue("ID");
+        String timestamp = cookieUtil.getCookieValue("login");
+        String ss = cookieUtil.getCookieValue("ss");
 
-		if (userId != null && timestamp != null && MD5Util.encrypt(userId + timestamp).equals(ss)) {
-			return "redirect:" + re;
-		}
+        if (userId != null && timestamp != null && MD5Util.encrypt(userId + timestamp).equals(ss)) {
+            return "redirect:" + re;
+        }
 
-		model.addAttribute("model", new LoginModel());
-		model.addAttribute("re", re);
-		return "account/login";
-	}
+        model.addAttribute("model", new LoginModel());
+        model.addAttribute("re", re);
+        return "account/login";
+    }
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestParam(value = "re", defaultValue = "/") String re,
-			@Valid @ModelAttribute("model") LoginModel model, Errors errors) {
-		if (errors.hasErrors()) {
-			return "account/login";
-		}
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@RequestParam(value = "re", defaultValue = "/") String re,
+                        @Valid @ModelAttribute("model") LoginModel model, Errors errors) {
+        if (errors.hasErrors()) {
+            return "account/login";
+        }
 
-		UserEntity entity = userMapper.selectOne(model.getUsername(), model.getPassword());
-		if (entity != null) {
-			long timestamp = Calendar.getInstance().getTimeInMillis();
-			cookieUtil.setCookie("ID", entity.getUserId() + "");
-			cookieUtil.setCookie("login", timestamp + "");
-			cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
-		}
+        UserEntity entity = userMapper.selectOne(model.getUsername(), model.getPassword());
+        if (entity != null) {
+            long timestamp = Calendar.getInstance().getTimeInMillis();
+            cookieUtil.setCookie("ID", entity.getUserId() + "");
+            cookieUtil.setCookie("login", timestamp + "");
+            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
+            return "redirect:" + re;
+        }
 
-		return "redirect:" + re;
-	}
+        return "account/login";
+    }
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
-		model.addAttribute("model", new RegisterModel());
-		model.addAttribute("re", re);
-		return "account/register";
-	}
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String register(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@RequestParam(value = "re", defaultValue = "/") String re,
-			@Valid @ModelAttribute("model") RegisterModel model, Errors errors) {
-		if (errors.hasErrors()) {
-			return "account/register";
-		}
+        model.addAttribute("model", new RegisterModel());
+        model.addAttribute("re", re);
+        return "account/register";
+    }
 
-		UserEntity entity = new UserEntity(model.getUsername(), model.getPassword(), model.getEmail(), model.getPhone());
-		userRepository.insert(entity);
-		Integer userId = entity.getUserId();
-		if (userId!=null && userId>0) {
-			long timestamp = Calendar.getInstance().getTimeInMillis();
-			cookieUtil.setCookie("ID", userId + "");
-			cookieUtil.setCookie("login", timestamp + "");
-			cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
-		} else {
-			return "account/register";
-		}
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(@RequestParam(value = "re", defaultValue = "/") String re,
+                           @Valid @ModelAttribute("model") RegisterModel model, Errors errors) {
 
-		return "redirect:" + re;
-	}
+        if (errors.hasErrors()) {
+            return "account/register";
+        }
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(@RequestParam(value = "re", defaultValue = "/") String re) {
-		return "redirect:" + re;
-	}
+        UserEntity entity = new UserEntity(model.getUsername(), model.getPassword(), model.getEmail(), model.getPhone());
+        userRepository.insert(entity);
+        Integer userId = entity.getUserId();
+        if (userId != null && userId > 0) {
+            long timestamp = Calendar.getInstance().getTimeInMillis();
+            cookieUtil.setCookie("ID", userId + "");
+            cookieUtil.setCookie("login", timestamp + "");
+            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
+            return "redirect:" + re;
+        }
+        return "account/register";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(@RequestParam(value = "re", defaultValue = "/") String re) {
+
+        cookieUtil.clearCookies();
+        return "redirect:" + re;
+    }
 }
