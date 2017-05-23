@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xi.quick.usermanager.entity.UserEntity;
+import org.xi.quick.usermanager.mapper.UserMapper;
 import org.xi.quick.usermanager.model.account.LoginModel;
 import org.xi.quick.usermanager.model.account.RegisterModel;
 import org.xi.quick.usermanager.repository.UserRepository;
@@ -28,6 +29,9 @@ public class AccountController extends BaseController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
@@ -52,7 +56,7 @@ public class AccountController extends BaseController {
 			return "account/login";
 		}
 
-		UserEntity entity = userRepository.selectOne(model.getUsername(), model.getPassword());
+		UserEntity entity = userMapper.selectOne(model.getUsername(), model.getPassword());
 		if (entity != null) {
 			long timestamp = Calendar.getInstance().getTimeInMillis();
 			cookieUtil.setCookie("ID", entity.getUserId() + "");
