@@ -24,21 +24,10 @@ import org.xi.quick.utils.web.CookieUtil;
 
 @Controller
 @RequestMapping({ "/account" })
-public class AccountController {
+public class AccountController extends BaseController {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private CookieUtil cookieUtil;
-
-	@ModelAttribute
-	private void initCookieHelper(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
-		cookieUtil = new CookieUtil(request, response);
-	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {

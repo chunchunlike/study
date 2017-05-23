@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/resources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/chat.css}"/>
+</head>
+<body>
+<div id="chat"></div>
+<input type="text" id="message" placeholder="请输入..."/><input type="button" id="send" value="发送"/>
+<script th:src="@{/resources/js/jquery.js}"></script>
+<script th:src="@{/resources/js/chat/chat.js}"></script>
+<script>
+    var url = 'ws://' + window.location.host + '/websocket';
+    var ws = new WebSocket(url);
+
+    ws.onopen = function () {
+
+    };
+
+    ws.onclose = function () {
+
+    };
+
+    ws.onmessage = function (event) {
+        $('#chat').append('<div>' + event.data + '</div>')
+    };
+
+    ws.onerror = function () {
+alert('error');
+    };
+
+    $(function () {
+        $('#send').click(function () {
+            var message = $('#message').val();
+            if (message == '') return;
+            ws.send(message);
+        })
+    })
+</script>
+</body>
+</html>
