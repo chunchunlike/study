@@ -12,6 +12,7 @@
         <module>utils</module>
         <module>filemanager</module>
         <module>usermanager</module>
+        <module>api</module>
     </modules>
 
     <properties>
