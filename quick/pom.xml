@@ -13,6 +13,7 @@
         <module>filemanager</module>
         <module>usermanager</module>
         <module>api</module>
+        <module>test</module>
     </modules>
 
     <properties>
