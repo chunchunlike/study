@@ -20,7 +20,6 @@ public class GsonTest {
             model.setUsername("xi");
             model.setName("郗世豪");
             model.setAddress("山西省临汾市尧都区");
-            model.setAge(i);
             list.add(model);
         }
         temp.setT(list);
@@ -30,7 +29,7 @@ public class GsonTest {
         TemplateTest<List<UserModel>> temp2 = type.fromJson(json);
 
         for(UserModel i : temp2.getT()){
-            System.out.println(i.getAge()+i.getAddress()+i.getName()+i.getUsername());
+            System.out.println(i.getAddress()+i.getName()+i.getUsername());
         }
         TemplateTest.findTest(10);
     }
