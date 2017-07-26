@@ -2,7 +2,7 @@ package org.xi.quick.model
 
 class UserModel {
     constructor() {
-        username = "";
+        username = ""
         name = ""
         address = ""
     }
