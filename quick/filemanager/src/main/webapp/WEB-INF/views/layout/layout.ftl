@@ -17,6 +17,8 @@
 </head>
 <body>
 <#nested />
+<script src="${contextPath}/resources/js/jquery.js"></script>
+<script src="${contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 <@scripts />
 </body>
 </html>
