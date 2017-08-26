@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<form action="/test/ajaxBindModel" method="post">
+    <input type="text" th:name="id" placeholder="id" th:id="id"/>
+    <input type="text" th:name="name" placeholder="name" th:id="name"/>
+    <input th:type="button" th:value="submit" id="btn-submit"/>
+</form>
+
+<script th:src="@{/resources/js/jquery.js}"></script>
+<script>
+    $('form').on('click', '#btn-submit', function () {
+        var id = $('#id').val();
+        var name = $('#name').val();
+        $.ajax({
+            url: $('#folder-form').attr('action'),
+            type: "POST",
+            data: {
+                id: id,
+                name: name
+            },
+            cache: false,
+            success: function (data) {
+                alert(data);
+            }
+        });
+    });
+</script>
+</body>
+</html>
