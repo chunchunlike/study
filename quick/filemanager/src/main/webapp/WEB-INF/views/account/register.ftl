@@ -18,23 +18,23 @@
         <!--*/-->
         <input type="hidden" id="re" name="re" value="${re!}" />
         <div>
-            <input type="text" id="username" name="username" />
+            <input type="text" id="username" name="username" placeholder="username" />
             <span></span>
         </div>
         <div>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" placeholder="password" />
             <span></span>
         </div>
         <div>
-            <input type="password" id="confirmPassword" name="confirmPassword" />
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm" />
             <span></span>
         </div>
         <div>
-            <input type="email" id="email" name="email" />
+            <input type="email" id="email" name="email" placeholder="email" />
             <span></span>
         </div>
         <div>
-            <input type="text" id="phone" name="phone" />
+            <input type="text" id="phone" name="phone" placeholder="phone" />
             <span></span>
         </div>
         <div><input type="submit" value="注册" /></div>

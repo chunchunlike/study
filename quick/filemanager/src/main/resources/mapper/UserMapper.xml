@@ -12,7 +12,7 @@
         <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
-    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="fileId">
+    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="userId">
         insert into user(username, password, email, phone)
         values(#{username}, #{password}, #{email}, #{phone})
     </insert>

@@ -113,7 +113,6 @@
         </div>
     </div>
     <div class="row">
-        <div>${id}</div>
         <#list files as entity>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
                 <p>${entity.fileId}</p>

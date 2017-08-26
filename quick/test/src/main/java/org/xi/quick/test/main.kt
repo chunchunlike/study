@@ -8,6 +8,7 @@ open class Base(var i: Int) {
     }
 }
 
+
 class Child(i: Int) : Base(i) {
     override fun p() {
         println("child" + this.i)
@@ -25,12 +26,12 @@ class ComTest {
 }
 
 fun <T> getLastIndex(i: T): T {
-    return i;
+    return i
 }
 
-fun fun1(i: Int): Int = 1;
-fun fun2(i: Int): Int = 2;
-fun funElse(i: Int): Int = 3;
+fun fun1(i: Int): Int = 1
+fun fun2(i: Int): Int = 2
+fun funElse(i: Int): Int = 3
 fun returnFun(i: Int): Int {
     when (i) {
         1 -> return fun1(i)
@@ -76,7 +77,7 @@ fun <T> max(collection: Collection<out T>, less: (T, T) -> Boolean): T? {
 
 
 fun main(args: Array<String>) {
-    var arr = listOf(1,2,3,4,100,8,40);
+    var arr = listOf(1,2,3,4,100,8,40)
     var max = max(arr){a,b->a<b}
 
     println(max)

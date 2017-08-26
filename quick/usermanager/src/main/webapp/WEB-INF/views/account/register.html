@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/resources/css/base.css}" />
-<link rel="stylesheet" th:href="@{/resources/css/account.css}" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/resources/css/base.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/account.css}"/>
 </head>
 <body>
-    <div class="register-content">
-        <section class="title">注册</section>
-        <form method="POST" th:object="${model}">
-            <!--/*展示所有错误--> 
-            <div class="error" th:if="${#fields.hasErrors('*')}">
-                <ul>
-                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-                </ul>
-            </div>
-            <!--*/-->
-            <input type="hidden" th:value="${re}" />
-            <div>
-                <input type="text" th:field="*{username}" th:class="${#fields.hasErrors('username')} ? 'error'" />
-                <span th:text="${#fields.errors('username')}" th:errors="*{username}" th:class="${#fields.hasErrors('username')} ? 'error'"></span>
-            </div>
-            <div>
-                <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'" />
-                <span th:text="${#fields.errors('password')}" th:errors="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'"></span>
-            </div>
-            <div>
-                <input type="password" th:field="*{confirmPassword}" th:class="${#fields.hasErrors('username')} ? 'confirmPassword'" />
-                <span th:text="${#fields.errors('confirmPassword')}" th:errors="*{confirmPassword}" th:class="${#fields.hasErrors('confirmPassword')} ? 'error'"></span>
-            </div>
-            <div>
-                <input type="email" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'" />
-                <span th:text="${#fields.errors('email')}" th:errors="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'"></span>
-            </div>
-            <div>
-                <input type="text" th:field="*{phone}" th:class="${#fields.hasErrors('phone')} ? 'error'" />
-                <span th:text="${#fields.errors('phone')}" th:errors="*{phone}" th:class="${#fields.hasErrors('phone')} ? 'error'"></span>
-            </div>
-            <div><input type="submit" value="注册" /></div>
-        </form>
-    </div>
+<div class="register-content">
+    <section class="title">注册</section>
+    <form method="POST" th:object="${model}">
+        <!--/*展示所有错误-->
+        <div class="error" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <!--*/-->
+        <input type="hidden" th:value="${re}"/>
+        <div>
+            <input type="text" th:field="*{username}" th:class="${#fields.hasErrors('username')} ? 'error'"/>
+            <span th:text="${#fields.errors('username')}" th:errors="*{username}"
+                  th:class="${#fields.hasErrors('username')} ? 'error'"></span>
+        </div>
+        <div>
+            <input type="password" th:field="*{password}" th:class="${#fields.hasErrors('password')} ? 'error'"/>
+            <span th:text="${#fields.errors('password')}" th:errors="*{password}"
+                  th:class="${#fields.hasErrors('password')} ? 'error'"></span>
+        </div>
+        <div>
+            <input type="password" th:field="*{confirmPassword}"
+                   th:class="${#fields.hasErrors('username')} ? 'confirmPassword'"/>
+            <span th:text="${#fields.errors('confirmPassword')}" th:errors="*{confirmPassword}"
+                  th:class="${#fields.hasErrors('confirmPassword')} ? 'error'"></span>
+        </div>
+        <div>
+            <input type="email" th:field="*{email}" th:class="${#fields.hasErrors('email')} ? 'error'"/>
+            <span th:text="${#fields.errors('email')}" th:errors="*{email}"
+                  th:class="${#fields.hasErrors('email')} ? 'error'"></span>
+        </div>
+        <div>
+            <input type="text" th:field="*{phone}" th:class="${#fields.hasErrors('phone')} ? 'error'"/>
+            <span th:text="${#fields.errors('phone')}" th:errors="*{phone}"
+                  th:class="${#fields.hasErrors('phone')} ? 'error'"></span>
+        </div>
+        <div><input type="submit" value="注册"/></div>
+    </form>
+</div>
 </body>
 </html>

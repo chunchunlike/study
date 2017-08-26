@@ -32,7 +32,7 @@
         <div>
             <!--单个字段绑定-->
             <@spring.bind "model.username" />
-            <input type="text" id="${spring.status.expression}" name="${spring.status.expression}" value="${spring.status.value!}" />
+            <input type="text" placeholder="username" id="${spring.status.expression}" name="${spring.status.expression}" value="${spring.status.value!}" />
             <span>${spring.status.errorMessage!}</span>
         </div>
         <div>
