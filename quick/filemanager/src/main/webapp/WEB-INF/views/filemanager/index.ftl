@@ -2,8 +2,6 @@
 <#assign title="登陆" />
 
 <#macro scripts>
-<script src="${contextPath}/resources/js/jquery.js"></script>
-<script src="${contextPath}/resources/bootstrap/js/bootstrap.js"></script>
 <script>
     $('#folder-form').on('click', '.btn-submit', function () {
         var name = $('#name').val();

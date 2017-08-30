@@ -36,7 +36,8 @@
             <span>${spring.status.errorMessage!}</span>
         </div>
         <div>
-            <@spring.formPasswordInput "model.password" />
+            <@spring.bind "model.password" />
+            <input type="text" placeholder="password" id="${spring.status.expression}" name="${spring.status.expression}" value="${spring.status.value!}" />
             <span><@spring.showErrors "" /></span>
         </div>
         <div><input type="checkbox" id="remember" name="remember"/></div>
