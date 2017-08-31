@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+    <dubbo:application name="dubbo_study_provider"></dubbo:application>
+
+    <dubbo:registry id="zk1" address="zookeeper://10.11.11.31:2181" default="true"></dubbo:registry>
+    <dubbo:registry id="zk2" address="zookeeper://10.11.11.32:2181"></dubbo:registry>
+    <dubbo:registry id="zk3" address="zookeeper://10.11.11.33:2181"></dubbo:registry>
+
+    <dubbo:protocol port="20882" />
+
+    <bean id="testService" class="org.xi.dubbostudy.provider.service.TestServiceImpl"></bean>
+    <dubbo:service interface="org.xi.dubbostudy.service.TestService" ref="testService"/>
+
+    <!--<dubbo:annotation package="org.xi.dubbostudy.provider.service" />-->
+
+</beans>
