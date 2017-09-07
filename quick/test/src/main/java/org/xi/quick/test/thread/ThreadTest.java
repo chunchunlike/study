@@ -1,4 +1,4 @@
-package org.xi.quick.test;
+package org.xi.quick.test.thread;
 
 import jdk.nashorn.internal.ir.Block;
 

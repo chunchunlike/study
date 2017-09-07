@@ -1,4 +1,4 @@
-package org.xi.quick.test
+package org.xi.quick.test.kotlin
 
 import java.util.concurrent.locks.Lock
 

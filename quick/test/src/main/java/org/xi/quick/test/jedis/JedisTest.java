@@ -1,4 +1,4 @@
-package org.xi.quick.jedis.test;
+package org.xi.quick.test.jedis;
 
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
