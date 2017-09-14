@@ -3,7 +3,7 @@
 <mapper namespace="org.xi.quick.filemanager.mapper.UserMapper">
 
   <resultMap id="userMap" type="org.xi.quick.filemanager.entity.UserEntity">
-        <id column="user_id" property="userId" jdbcType="INTEGER" />
+        <id column="id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
@@ -12,13 +12,13 @@
         <result column="status" property="status" jdbcType="TINYINT" />
   </resultMap>
 
-    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.UserEntity" useGeneratedKeys="true" keyProperty="id">
         insert into user(username, password, email, phone)
         values(#{username}, #{password}, #{email}, #{phone})
     </insert>
 
     <delete id="delete" parameterType="Integer">
-        update user set status=-1 where user_id=#{userId}
+        update user set status=-1 where id=#{id}
     </delete>
 
     <update id="update" parameterType="org.xi.quick.filemanager.entity.UserEntity">
@@ -35,7 +35,7 @@
             </if>
             update_time=now()
         </set>
-        where file_id=#{fileId}
+        where id=#{id}
     </update>
   
     <select id="selectOne" resultMap="userMap">

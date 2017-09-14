@@ -36,11 +36,11 @@ public class AccountController extends BaseController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(@RequestParam(value = "re", defaultValue = "/") String re, Model model) {
 
-        String userId = cookieUtil.getCookieValue("ID");
+        String id = cookieUtil.getCookieValue("ID");
         String timestamp = cookieUtil.getCookieValue("login");
         String ss = cookieUtil.getCookieValue("ss");
 
-        if (userId != null && timestamp != null && MD5Util.encrypt(userId + timestamp).equals(ss)) {
+        if (id != null && timestamp != null && MD5Util.encrypt(id + timestamp).equals(ss)) {
             return "redirect:" + re;
         }
 
@@ -59,9 +59,9 @@ public class AccountController extends BaseController {
         UserEntity entity = userMapper.selectOne(model.getUsername(), model.getPassword());
         if (entity != null) {
             long timestamp = Calendar.getInstance().getTimeInMillis();
-            cookieUtil.setCookie("ID", entity.getUserId() + "");
+            cookieUtil.setCookie("ID", entity.getId() + "");
             cookieUtil.setCookie("login", timestamp + "");
-            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
+            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getId() + "" + timestamp));
             return "redirect:" + re;
         }
 
@@ -86,12 +86,12 @@ public class AccountController extends BaseController {
 
         UserEntity entity = new UserEntity(model.getUsername(), model.getPassword(), model.getEmail(), model.getPhone());
         userRepository.insert(entity);
-        Integer userId = entity.getUserId();
-        if (userId != null && userId > 0) {
+        Integer id = entity.getId();
+        if (id != null && id > 0) {
             long timestamp = Calendar.getInstance().getTimeInMillis();
-            cookieUtil.setCookie("ID", userId + "");
+            cookieUtil.setCookie("ID", id + "");
             cookieUtil.setCookie("login", timestamp + "");
-            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getUserId() + "" + timestamp));
+            cookieUtil.setCookie("ss", MD5Util.encrypt(entity.getId() + "" + timestamp));
             return "redirect:" + re;
         }
         return "account/register";

@@ -9,7 +9,7 @@ public interface UserMapper {
 
     Integer insert(UserEntity entity);
 
-    Integer delete(Integer userId);
+    Integer delete(Integer id);
 
     Integer update(UserEntity entity);
 

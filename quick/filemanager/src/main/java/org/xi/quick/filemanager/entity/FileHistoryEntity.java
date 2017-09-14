@@ -13,10 +13,10 @@ public class FileHistoryEntity {
         super();
     }
 
-    public FileHistoryEntity(Integer fileId, Integer parentId, String fileName, String filePath, Integer fileType,
+    public FileHistoryEntity(Integer id, Integer parentId, String fileName, String filePath, Integer fileType,
             String suffix) {
         super();
-        this.fileId = fileId;
+        this.id = id;
         this.parentId = parentId;
         this.fileName = fileName;
         this.filePath = filePath;
@@ -24,23 +24,23 @@ public class FileHistoryEntity {
         this.suffix = suffix;
     }
 
-    public FileHistoryEntity(Integer fileId, Integer parentId, String fileName, String filePath, Integer fileType,
-            String suffix, Integer userId) {
+    public FileHistoryEntity(Integer id, Integer parentId, String fileName, String filePath, Integer fileType,
+            String suffix, Integer fileId) {
         super();
-        this.fileId = fileId;
+        this.id = id;
         this.parentId = parentId;
         this.fileName = fileName;
         this.filePath = filePath;
         this.fileType = fileType;
         this.suffix = suffix;
-        this.userId = userId;
+        this.id = fileId;
     }
 
-    public FileHistoryEntity(Integer fileHistoryId, Integer fileId, Integer parentId, String fileName, String filePath,
+    public FileHistoryEntity(Integer id, Integer fileId, Integer parentId, String fileName, String filePath,
             Integer fileType, String suffix, Timestamp createTime, Timestamp operateType, Integer userId) {
         super();
-        this.fileHistoryId = fileHistoryId;
-        this.fileId = fileId;
+        this.id = id;
+        this.id = fileId;
         this.parentId = parentId;
         this.fileName = fileName;
         this.filePath = filePath;
@@ -48,12 +48,12 @@ public class FileHistoryEntity {
         this.suffix = suffix;
         this.createTime = createTime;
         this.operateType = operateType;
-        this.userId = userId;
+        this.id = userId;
     }
 
     @Id
-    @Column(name = "file_history_id")
-    private Integer fileHistoryId;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "file_id")
     private Integer fileId;
@@ -82,12 +82,12 @@ public class FileHistoryEntity {
     @Column(name = "user_id")
     private Integer userId;
 
-    public Integer getFileHistoryId() {
-        return fileHistoryId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setFileHistoryId(Integer fileHistoryId) {
-        this.fileHistoryId = fileHistoryId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getFileId() {

@@ -3,7 +3,7 @@
 <mapper namespace="org.xi.quick.usermanager.mapper.UserMapper">
 
     <resultMap id="userMap" type="org.xi.quick.usermanager.entity.UserEntity">
-        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
@@ -14,17 +14,17 @@
     <parameterMap id="parameterMap" type="org.xi.quick.usermanager.entity.UserEntity"></parameterMap>
 
     <insert id="insert" parameterMap="parameterMap" useGeneratedKeys="true"
-            keyProperty="userId">
+            keyProperty="id">
         insert into user(username, password, email, phone)
         values(#{username}, #{password}, #{email}, #{phone})
     </insert>
 
-    <insert id="insertSelectively" parameterMap="parameterMap" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insertSelectively" parameterMap="parameterMap" useGeneratedKeys="true" keyProperty="id">
         insert into user
 
         <trim prefix="(" suffix=")" suffixOverrides=",">
 
-            <if test="userId != null">user_id,</if>
+            <if test="id != null">id,</if>
             <if test="username != null">username,</if>
             <if test="password != null">password,</if>
             <if test="email != null">email,</if>
@@ -35,7 +35,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 
-            <if test="userId != null">#{user_id},</if>
+            <if test="id != null">#{id},</if>
             <if test="username != null">#{username},</if>
             <if test="password != null">#{password},</if>
             <if test="email != null">#{email},</if>
@@ -47,7 +47,7 @@
     </insert>
 
     <delete id="delete" parameterType="Integer">
-        update user set status=-1 where user_id=#{userId}
+        update user set status=-1 where id=#{id}
     </delete>
 
     <update id="update" parameterMap="parameterMap">
@@ -64,13 +64,13 @@
             </if>
             update_time=now()
         </set>
-        where file_id=#{fileId}
+        where id=#{id}
     </update>
 
     <select id="selectOne" resultMap="userMap">
          <![CDATA[
             select
-                user_id,
+                id,
                 username,
                 password,
                 email,
@@ -91,7 +91,7 @@
     <select id="select" resultMap="userMap" parameterMap="parameterMap">
 
             select
-                user_id,
+                id,
                 username,
                 password,
                 email,
@@ -102,8 +102,8 @@
             from
               user
         <where>
-            <if test="userId !=null and userId > 0">
-                user.user_id=#{userId}
+            <if test="id !=null and id > 0">
+                user.id=#{id}
             </if>
             <if test="username != null">
                 AND user.username=#{username}

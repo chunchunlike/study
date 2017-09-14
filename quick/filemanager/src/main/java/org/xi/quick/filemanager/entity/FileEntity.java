@@ -33,10 +33,10 @@ public class FileEntity {
         this.userId = userId;
     }
 
-    public FileEntity(Integer fileId, Integer parentId, String fileName, String filePath, Integer fileType,
+    public FileEntity(Integer id, Integer parentId, String fileName, String filePath, Integer fileType,
             String suffix, Timestamp createTime, Timestamp updateTime, Integer status, Integer userId) {
         super();
-        this.fileId = fileId;
+        this.id = id;
         this.parentId = parentId;
         this.fileName = fileName;
         this.filePath = filePath;
@@ -49,8 +49,8 @@ public class FileEntity {
     }
 
     @Id
-    @Column(name = "file_id")
-    private Integer fileId;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "parent_id")
     private Integer parentId;
@@ -79,12 +79,12 @@ public class FileEntity {
     @Column(name = "user_id")
     private Integer userId;
 
-    public Integer getFileId() {
-        return fileId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setFileId(Integer fileId) {
-        this.fileId = fileId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getParentId() {

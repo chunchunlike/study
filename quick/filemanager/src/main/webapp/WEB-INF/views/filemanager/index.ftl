@@ -113,14 +113,14 @@
     <div class="row">
         <#list files as entity>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <p>${entity.fileId}</p>
+                <p>${entity.id}</p>
                 <#if entity.fileType == 1>
-                    <a href="${requestContext}/filemanager?folderId=${entity.fileId}">${entity.fileName}</a>
+                    <a href="${requestContext}/filemanager?folderId=${entity.id}">${entity.fileName}</a>
                 <#else>
                     <p>${entity.fileName}</p>
                 </#if>
                 <p>${entity.filePath}</p>
-                <a href="${requestContext}/filemanager/delete/id=${entity.fileId}">删除</a>
+                <a href="${requestContext}/filemanager/delete/id=${entity.id}">删除</a>
             </div>
         </#list>
     </div>

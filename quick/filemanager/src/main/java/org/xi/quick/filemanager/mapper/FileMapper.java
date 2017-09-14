@@ -8,7 +8,7 @@ public interface FileMapper {
 
     Integer insert(FileEntity entity);
 
-    Integer delete(Integer fileId);
+    Integer delete(Integer id);
 
     Integer update(FileEntity entity);
 

@@ -36,41 +36,41 @@ public class JdbcUserRepository extends JdbcBaseRepository implements UserReposi
             }
         }, keyHolder);
         Integer id = keyHolder.getKey().intValue();
-        entity.setUserId(id);
+        entity.setId(id);
         return id;
     }
 
 
-    public Integer delete(Integer userId) {
+    public Integer delete(Integer id) {
 
-        final String sql = "update user set status=-1 where user_id=?";
+        final String sql = "update user set status=-1 where id=?";
 
-        return jdbc.update(sql, userId);
+        return jdbc.update(sql, id);
     }
 
     public Integer update(UserEntity entity) {
 
-        final String sql = "update user password=:password,email=:email,phone=:phone,update_time=now() where user_id=:user_id";
+        final String sql = "update user password=:password,email=:email,phone=:phone,update_time=now() where id=:id";
 
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("password", entity.getPassword());
         paramMap.put("email", entity.getEmail());
         paramMap.put("phone", entity.getPhone());
-        paramMap.put("user_id", entity.getUserId());
+        paramMap.put("id", entity.getId());
 
         return jdbc.update(sql, paramMap);
     }
 
-    public UserEntity selectOne(Integer userId){
+    public UserEntity selectOne(Integer id){
 
-        String sql = "select user_id,username,password,email,phone,create_time,status from user where user_id=?";
-        UserEntity entity = jdbc.queryForObject(sql, new UserRowMapper(), userId);
+        String sql = "select id,username,password,email,phone,create_time,status from user where id=?";
+        UserEntity entity = jdbc.queryForObject(sql, new UserRowMapper(), id);
         return entity;
     }
 
     public UserEntity selectOne(String username, String password){
 
-        String sql = "select user_id,username,password,email,phone,create_time,status from user where username=? and password=?";
+        String sql = "select id,username,password,email,phone,create_time,status from user where username=? and password=?";
         UserEntity entity = jdbc.queryForObject(sql, new UserRowMapper(), username, password);
         return entity;
     }
@@ -78,7 +78,7 @@ public class JdbcUserRepository extends JdbcBaseRepository implements UserReposi
     private final class UserRowMapper implements RowMapper<UserEntity> {
 
         public UserEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            UserEntity entity = new UserEntity(rs.getInt("user_id"), rs.getString("username"),
+            UserEntity entity = new UserEntity(rs.getInt("id"), rs.getString("username"),
                     rs.getString("password"), rs.getString("email"), rs.getString("phone"),
                     rs.getTimestamp("create_time"), rs.getInt("status"));
 

@@ -21,10 +21,10 @@ public class UserEntity {
         this.phone = phone;
     }
 
-    public UserEntity(Integer userId, String username, String password, String email, String phone,
+    public UserEntity(Integer id, String username, String password, String email, String phone,
             Timestamp createTime, Integer status) {
         super();
-        this.userId = userId;
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -34,8 +34,8 @@ public class UserEntity {
     }
 
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "username")
     private String username;
@@ -55,12 +55,12 @@ public class UserEntity {
     @Column(name = "status")
     private Integer status;
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {

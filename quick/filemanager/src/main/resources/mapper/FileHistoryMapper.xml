@@ -3,7 +3,7 @@
 <mapper namespace="org.xi.quick.filemanager.mapper.FileHistoryMapper">
 
     <resultMap id="fileHistoryMap" type="org.xi.quick.filemanager.entity.FileHistoryEntity">
-        <id column="file_history_id" property="fileHistoryId" jdbcType="INTEGER" />
+        <id column="id" property="id" jdbcType="INTEGER" />
         <result column="file_id" property="fileId" jdbcType="INTEGER" />
         <result column="parent_id" property="parentId" jdbcType="INTEGER" />
         <result column="file_name" property="fileName" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
         <result column="user_id" property="userId" jdbcType="INTEGER" />
     </resultMap>
 
-    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.FileHistoryEntity" useGeneratedKeys="true" keyProperty="fileHistoryId">
+    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.FileHistoryEntity" useGeneratedKeys="true" keyProperty="id">
         insert into file_history(file_id, parent_id, file_name, file_path, file_type, suffix, operate_type, user_id)
         values(#{fileId}, #{parentId}, #{fileName}, #{filePath}, #{fileType}, #{suffix}, #{operateType}, #{userId})
     </insert>

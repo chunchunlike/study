@@ -3,7 +3,7 @@
 <mapper namespace="org.xi.quick.filemanager.mapper.FileMapper">
 
     <resultMap id="fileMap" type="org.xi.quick.filemanager.entity.FileEntity">
-        <id column="file_id" property="fileId" jdbcType="INTEGER" />
+        <id column="id" property="id" jdbcType="INTEGER" />
         <result column="parent_id" property="parentId" jdbcType="INTEGER" />
         <result column="file_name" property="fileName" jdbcType="VARCHAR" />
         <result column="file_path" property="filePath" jdbcType="VARCHAR" />
@@ -15,13 +15,13 @@
         <result column="user_id" property="userId" jdbcType="INTEGER" />
     </resultMap>
 
-    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.FileEntity" useGeneratedKeys="true" keyProperty="fileId">
+    <insert id="insert" parameterType="org.xi.quick.filemanager.entity.FileEntity" useGeneratedKeys="true" keyProperty="id">
         insert into file(parent_id, file_name, file_path, file_type, suffix, user_id)
         values(#{parentId}, #{fileName}, #{filePath}, #{fileType}, #{suffix}, #{userId})
     </insert>
 
     <delete id="delete" parameterType="Integer">
-        update file set status=-1 where file_id=#{fileId}
+        update file set status=-1 where id=#{id}
     </delete>
 
     <update id="update" parameterType="org.xi.quick.filemanager.entity.FileEntity">
@@ -42,17 +42,17 @@
             <if test="suffix != null">
                 suffix=#{suffix},
             </if>
-            <if test="suffix != null">
+            <if test="userId != null">
                 user_id=#{userId},
             </if>
             update_time=now()
         </set>
-        where file_id=#{fileId}
+        where id=#{id}
     </update>
 
     <select id="selectByParentId" resultMap="fileMap">
          <![CDATA[
-         select * from file where parent_id=#{parentId} and status<>-1 order by file_id desc
+         select * from file where parent_id=#{parentId} and status<>-1 order by id desc
          ]]>
     </select>
 

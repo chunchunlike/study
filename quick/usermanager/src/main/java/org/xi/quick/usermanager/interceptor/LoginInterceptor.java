@@ -19,11 +19,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         CookieUtil cookieUtil = new CookieUtil(request, response);
 
-        String userId = cookieUtil.getCookieValue("ID");
+        String id = cookieUtil.getCookieValue("ID");
         String timestamp = cookieUtil.getCookieValue("login");
         String ss = cookieUtil.getCookieValue("ss");
 
-        if (userId == null || timestamp == null || !MD5Util.encrypt(userId+timestamp).equals(ss)) {
+        if (id == null || timestamp == null || !MD5Util.encrypt(id+timestamp).equals(ss)) {
             response.sendRedirect(request.getContextPath() + LOGIN_URL);
             return false;
         }

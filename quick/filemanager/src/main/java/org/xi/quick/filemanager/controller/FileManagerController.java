@@ -44,7 +44,7 @@ public class FileManagerController {
 
         FileEntity entity = new FileEntity(parentId, name, "", 1, "");
         fileMapper.insert(entity);
-        return entity.getFileId();
+        return entity.getId();
     }
 
     @ResponseBody
@@ -58,7 +58,7 @@ public class FileManagerController {
 
         FileEntity entity = new FileEntity(parentId, fileFullName, "", 0, suffix);
         fileMapper.insert(entity);
-        return entity.getFileId();
+        return entity.getId();
     }
 
     @ResponseBody
