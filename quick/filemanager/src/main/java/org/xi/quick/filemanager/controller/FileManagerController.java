@@ -21,71 +21,71 @@ import org.xi.quick.filemanager.utils.FileUtil;
 @RequestMapping({ "", "/", "/filemanager" })
 public class FileManagerController {
 
-	@Autowired
+    @Autowired
     private FileMapper fileMapper;
-	
-	@Value("#{commonProperties.upload_folder}")
-	private String uploadFolder;
+
+    @Value("#{commonProperties.upload_folder}")
+    private String uploadFolder;
     
-	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
-	public String index(@RequestParam(value="folderId", defaultValue="0") Integer parentId, Model model) {
-		
-		List<FileEntity> files = fileMapper.selectByParentId(parentId);
-		model.addAttribute("files", files);
-		model.addAttribute("filesCount", files.size());
-		model.addAttribute("parentId", parentId);
+    @RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
+    public String index(@RequestParam(value="folderId", defaultValue="0") Integer parentId, Model model) {
 
-		return "filemanager/index";
-	}
+        List<FileEntity> files = fileMapper.selectByParentId(parentId);
+        model.addAttribute("files", files);
+        model.addAttribute("filesCount", files.size());
+        model.addAttribute("parentId", parentId);
 
-	@ResponseBody
-	@RequestMapping(value = "/addfolder", method = RequestMethod.GET)
-	public Integer addFolder(@RequestParam(value="folderId", defaultValue="0") Integer parentId, String name) {
-		
-		FileEntity entity = new FileEntity(parentId, name, "", 1, "");
-		fileMapper.insert(entity);
-		return entity.getFileId();
-	}
+        return "filemanager/index";
+    }
 
-	@ResponseBody
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public Integer add(@RequestParam(value="folderId", defaultValue="0") Integer parentId, MultipartFile file) {
-		
-		String fileFullName = file.getOriginalFilename();
-		String suffix = fileFullName.contains(".") ? fileFullName.substring(fileFullName.lastIndexOf(".")) : "";
+    @ResponseBody
+    @RequestMapping(value = "/addfolder", method = RequestMethod.GET)
+    public Integer addFolder(@RequestParam(value="folderId", defaultValue="0") Integer parentId, String name) {
 
-		FileUtil.saveMultipartFile(file, uploadFolder, fileFullName);
+        FileEntity entity = new FileEntity(parentId, name, "", 1, "");
+        fileMapper.insert(entity);
+        return entity.getFileId();
+    }
 
-		FileEntity entity = new FileEntity(parentId, fileFullName, "", 0, suffix);
-		fileMapper.insert(entity);
-		return entity.getFileId();
-	}
+    @ResponseBody
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public Integer add(@RequestParam(value="folderId", defaultValue="0") Integer parentId, MultipartFile file) {
 
-	@ResponseBody
-	@RequestMapping(value = "/multiadd", method = RequestMethod.POST)
-	public List<Integer> add(@RequestParam(value="folderId", defaultValue="0") Integer parentId, MultipartFile[] files) {
-		
-		List<Integer> ids = new ArrayList<Integer>();
-		for(MultipartFile file : files) {
+        String fileFullName = file.getOriginalFilename();
+        String suffix = fileFullName.contains(".") ? fileFullName.substring(fileFullName.lastIndexOf(".")) : "";
 
-			String fileFullName = file.getOriginalFilename();
-			String suffix = fileFullName.contains(".") ? fileFullName.substring(fileFullName.lastIndexOf(".")) : "";
+        FileUtil.saveMultipartFile(file, uploadFolder, fileFullName);
 
-			FileUtil.saveMultipartFile(file, uploadFolder, fileFullName);
+        FileEntity entity = new FileEntity(parentId, fileFullName, "", 0, suffix);
+        fileMapper.insert(entity);
+        return entity.getFileId();
+    }
 
-			FileEntity entity = new FileEntity(parentId, fileFullName, "", 0, suffix);
-			Integer id = fileMapper.insert(entity);
-			ids.add(id);
-		}
-		return ids;
-	}
+    @ResponseBody
+    @RequestMapping(value = "/multiadd", method = RequestMethod.POST)
+    public List<Integer> add(@RequestParam(value="folderId", defaultValue="0") Integer parentId, MultipartFile[] files) {
 
-	@ResponseBody
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public JsonResult<Integer> delete(Integer id) {
-		
-		fileMapper.delete(id);
-		return new JsonResult<Integer>((short)0, "", 1, 0l);
-	}
-	
+        List<Integer> ids = new ArrayList<Integer>();
+        for(MultipartFile file : files) {
+
+            String fileFullName = file.getOriginalFilename();
+            String suffix = fileFullName.contains(".") ? fileFullName.substring(fileFullName.lastIndexOf(".")) : "";
+
+            FileUtil.saveMultipartFile(file, uploadFolder, fileFullName);
+
+            FileEntity entity = new FileEntity(parentId, fileFullName, "", 0, suffix);
+            Integer id = fileMapper.insert(entity);
+            ids.add(id);
+        }
+        return ids;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public JsonResult<Integer> delete(Integer id) {
+
+        fileMapper.delete(id);
+        return new JsonResult<Integer>((short)0, "", 1, 0l);
+    }
+
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FileHistoryMapper {
 
-	int insert(FileHistoryEntity entity);
-	
-	List<FileHistoryEntity> select(Integer fileId);
+    int insert(FileHistoryEntity entity);
+
+    List<FileHistoryEntity> select(Integer fileId);
 }

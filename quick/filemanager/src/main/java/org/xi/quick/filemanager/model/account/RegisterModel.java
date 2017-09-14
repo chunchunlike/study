@@ -8,15 +8,15 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class RegisterModel {
 
-	@NotBlank(message = "用户名不能为空")
+    @NotBlank(message = "用户名不能为空")
     @Size(min = 4, max = 20, message = "用户名必须在4-20位")
-	private String username;
+    private String username;
 
     @NotBlank(message = "密码不能为空")
     @Size(min = 6, max = 50, message = "密码长度必须在6-20位")
     private String password;
 
-	@NotBlank(message = "确认密码不能为空")
+    @NotBlank(message = "确认密码不能为空")
     @Size(min = 6, max = 50, message = "确认密码长度必须在6-20位")
     private String confirmPassword;
 
@@ -49,20 +49,20 @@ public class RegisterModel {
     }
 
     public String getPassword() {
-		return password;
-	}
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
 
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getEmail() {
         return email;

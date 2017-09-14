@@ -81,6 +81,6 @@ fun main(args: Array<String>) {
     var max = max(arr){a,b->a<b}
 
     println(max)
-    var	max2:String? = "hehe"
+    var    max2:String? = "hehe"
     var tmp = max2!!
 }

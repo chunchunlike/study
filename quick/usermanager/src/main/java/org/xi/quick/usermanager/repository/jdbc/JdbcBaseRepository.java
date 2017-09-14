@@ -9,23 +9,23 @@ import org.springframework.jdbc.core.RowMapper;
 
 public class JdbcBaseRepository {
 
-	@Autowired
-	protected JdbcOperations jdbc;
+    @Autowired
+    protected JdbcOperations jdbc;
 
-	protected final class IdRowMapper implements RowMapper<Integer> {
+    protected final class IdRowMapper implements RowMapper<Integer> {
 
-		private String idName = "id";
+        private String idName = "id";
 
-		public IdRowMapper() {
+        public IdRowMapper() {
 
-		}
+        }
 
-		public IdRowMapper(String idName) {
-			this.idName = idName;
-		}
+        public IdRowMapper(String idName) {
+            this.idName = idName;
+        }
 
-		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return rs.getInt(idName);
-		}
-	}
+        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return rs.getInt(idName);
+        }
+    }
 }
