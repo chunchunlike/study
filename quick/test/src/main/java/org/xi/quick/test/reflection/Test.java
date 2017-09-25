@@ -15,15 +15,14 @@ public class Test {
 
         Method[] ms = clazz.getMethods();
         for (Method m : ms) {
-                if (m.getParameterTypes().length == 1) {
-                    System.out.println(m.getName());
-                    Class<?> clazzParameterType = m.getParameterTypes()[0];
-                    //m.invoke(obj,)
-                    System.out.println(clazzParameterType.getName());
-                    //break;
-                }
+            if (m.getParameterTypes().length == 1) {
+                System.out.println(m.getName());
+                Class<?> clazzParameterType = m.getParameterTypes()[0];
+                //m.invoke(obj,)
+                System.out.println(clazzParameterType.getName());
+                //break;
+            }
         }
-
 
     }
 }
