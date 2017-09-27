@@ -6,11 +6,11 @@
 
     <dubbo:application name="dubbo_study_provider"></dubbo:application>
 
-    <dubbo:registry id="zk1" address="zookeeper://10.11.11.31:2181" default="true"></dubbo:registry>
-    <dubbo:registry id="zk2" address="zookeeper://10.11.11.32:2181"></dubbo:registry>
-    <dubbo:registry id="zk3" address="zookeeper://10.11.11.33:2181"></dubbo:registry>
+    <dubbo:registry id="zk1" address="zookeeper://192.168.10.31:2181" default="true"></dubbo:registry>
+    <dubbo:registry id="zk2" address="zookeeper://192.168.10.32:2181"></dubbo:registry>
+    <dubbo:registry id="zk3" address="zookeeper://192.168.10.33:2181"></dubbo:registry>
 
-    <dubbo:protocol port="20882" />
+    <dubbo:protocol port="20881" />
 
     <bean id="testService" class="org.xi.dubbostudy.provider.service.TestServiceImpl"></bean>
     <dubbo:service interface="org.xi.dubbostudy.service.TestService" ref="testService"/>

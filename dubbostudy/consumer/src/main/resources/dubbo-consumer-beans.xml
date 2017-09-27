@@ -6,9 +6,9 @@
 
     <dubbo:application name="dubbo_study_consumer"></dubbo:application>
 
-    <dubbo:registry id="zk1" address="zookeeper://10.11.11.31:2181" default="true"></dubbo:registry>
-    <dubbo:registry id="zk2" address="zookeeper://10.11.11.32:2181"></dubbo:registry>
-    <dubbo:registry id="zk3" address="zookeeper://10.11.11.33:2181"></dubbo:registry>
+    <dubbo:registry id="zk1" address="zookeeper://192.168.10.31:2181" default="true"></dubbo:registry>
+    <dubbo:registry id="zk2" address="zookeeper://192.168.10.32:2181"></dubbo:registry>
+    <dubbo:registry id="zk3" address="zookeeper://192.168.10.33:2181"></dubbo:registry>
 
     <dubbo:reference interface="org.xi.dubbostudy.service.TestService" id="testService"></dubbo:reference>
 
