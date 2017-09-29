@@ -11,13 +11,6 @@
     <name>filemanager Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
-        <freemarker-version>2.3.24-atlassian-2</freemarker-version>
-        <hibernate-version>5.4.1.Final</hibernate-version>
-        <ehcache-version>3.3.0</ehcache-version>
-        <jedis-version>2.9.0</jedis-version>
-        <jackson-version>2.9.0</jackson-version>
-        <persistence-version>1.0.2</persistence-version>
-        <apache-httpclient-version>4.5.3</apache-httpclient-version>
     </properties>
     <dependencies>
         <dependency>

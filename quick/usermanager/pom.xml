@@ -11,12 +11,6 @@
     <name>usermanager Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
-        <thymeleaf-version>3.0.7.RELEASE</thymeleaf-version>
-        <hibernate-version>5.4.1.Final</hibernate-version>
-        <jedis-version>2.9.0</jedis-version>
-        <jackson-version>2.9.0</jackson-version>
-        <persistence-version>1.0.2</persistence-version>
-        <apache-httpclient-version>4.5.3</apache-httpclient-version>
     </properties>
     <dependencies>
         <dependency>
