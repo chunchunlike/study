@@ -1,4 +1,4 @@
-package org.xi.quick.test.springconfig;
+package org.xi.quick.test.spring.config;
 
 import org.springframework.stereotype.Component;
 
