@@ -5,16 +5,18 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 
 public class RabbitConsumer {
+
     //队列名称
-    private final static String QUEUE_NAME = "test_queue";
+    private final static String QUEUE_NAME = "queue_test";
 
     public static void main(String[] args) throws Exception {
+
         //创建连接和频道
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("192.168.10.47");
-        factory.setUsername("crmadmin");
-        factory.setPassword("crmadmin123");
-        factory.setVirtualHost("crm_host");
+        factory.setHost("192.168.20.72");
+        factory.setUsername("xi");
+        factory.setPassword("rarexi213");
+        factory.setVirtualHost("/xi");
         factory.setPort(5672);
 
         Connection connection = factory.newConnection();
@@ -27,7 +29,7 @@ public class RabbitConsumer {
                                        AMQP.BasicProperties properties, byte[] body)
                     throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println("Customer Received '" + message + "'");
+                System.out.println("customer receive '" + message + "'");
             }
         };
 
