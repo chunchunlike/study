@@ -17,7 +17,7 @@ create table `user`
 
     `status` tinyint not null default 1,
 
-    constraint pk_user primary key(user_id)
+    constraint pk_user primary key(id)
 );
 
 
@@ -37,7 +37,7 @@ create table `file`
     `status` tinyint not null default 1,
     `user_id` int,
 
-    constraint pk_file primary key(file_id)
+    constraint pk_file primary key(id)
 );
 
 create table `file_history`
@@ -56,5 +56,5 @@ create table `file_history`
     `operate_type` tinyint not null,
     `user_id` int,
 
-    constraint pk_file_history primary key(file_history_id)
+    constraint pk_file_history primary key(id)
 );
