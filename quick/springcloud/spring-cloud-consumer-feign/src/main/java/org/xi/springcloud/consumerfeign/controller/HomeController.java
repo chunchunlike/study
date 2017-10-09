@@ -1,9 +1,10 @@
-package org.xi.springcloud.consumerribbon.controller;
+package org.xi.springcloud.consumerfeign.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.xi.springcloud.consumerribbon.service.CommonService;
+import org.xi.springcloud.consumerfeign.service.CommonService;
 
 @RestController
 public class HomeController {
@@ -16,7 +17,7 @@ public class HomeController {
         return commonService.getProviderPort();
     }
 
-    @RequestMapping(value = "/sayHello")
+    @RequestMapping(value = "/sayHello", method = RequestMethod.GET)
     public String sayHello(String name) {
         return commonService.sayHello(name);
     }

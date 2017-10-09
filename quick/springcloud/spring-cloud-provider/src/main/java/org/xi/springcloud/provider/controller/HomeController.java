@@ -16,4 +16,9 @@ public class HomeController {
     public String getProviderPort() {
         return "provider port: " + port;
     }
+
+    @RequestMapping("/sayHello")
+    public String sayHello(String name) {
+        return "hello  " + name;
+    }
 }
