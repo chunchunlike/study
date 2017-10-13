@@ -15,7 +15,7 @@ public class Program {
 
     static void testableTest() {
 
-        List<Integer> list = Arrays.asList(9,15,20,9,3,100);
+        List<Integer> list = Arrays.asList(9, 15, 20, 9, 3, 100);
 
         List<Integer> result;
 
@@ -33,7 +33,7 @@ public class Program {
 
     static void returnableTest() {
 
-        List<Integer> list = Arrays.asList(9,15,20,9,3,100);
+        List<Integer> list = Arrays.asList(9, 15, 20, 9, 3, 100);
 
         List<String> result;
 
@@ -62,7 +62,7 @@ public class Program {
 
     static <T, R> List<R> returnString(List<T> list, Returnable<T, R> r) {
         List<R> result = new ArrayList<>();
-        for(T item : list) {
+        for (T item : list) {
             result.add(r.getValue(item));
         }
         return result;
