@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 public class Program {
 
     public static void main(String[] args) {
-        printSplitLine("toLookupTest");
+
+        printSplitLine("toMapTest");
         toMapTest();
 
         printSplitLine("groupByTest");
@@ -37,10 +38,6 @@ public class Program {
         Map<Integer, User> userMap =
                 userList.stream()
                         .collect(Collectors.toMap(user -> user.getId(), user -> user));
-        System.out.println(userMap);
-
-        //Map<Integer, User> userMap2 =
-        userList.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
         System.out.println(userMap);
     }
 
