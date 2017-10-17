@@ -7,6 +7,9 @@ public class Program {
 
     public static void main(String[] args) {
 
+        printSplitLine("customCollectorTest");
+        customCollectorTest();
+
         printSplitLine("toMapTest");
         toMapTest();
 
@@ -27,8 +30,16 @@ public class Program {
 
         printSplitLine();
 
-        printSplitLine();
+    }
 
+    static void customCollectorTest() {
+
+        List<User> userList = getUserList();
+
+        Map<Integer, User> userMap =
+                userList.stream()
+                        .collect(new ToMapCollector());
+        System.out.println(userMap);
     }
 
     static void toMapTest() {
@@ -107,7 +118,17 @@ public class Program {
                 new User(5, "张敏", "男", 56.5),
                 new User(6, "曹青", "女", 53.5)
         );
-        return userList;
+
+        List<User> users = new ArrayList<User>() {{
+            add(new User(1, "郗世豪", "男", 76.5));
+            add(new User(2, "朱凡凡", "女", 50.5));
+            add(new User(3, "胡永强", "男", 80.8));
+            add(new User(4, "贺嘉良", "男", 80.5));
+            add(new User(5, "张敏", "男", 56.5));
+            add(new User(6, "曹青", "女", 53.5));
+        }};
+
+        return users;
     }
 
     static void selectTest() {
