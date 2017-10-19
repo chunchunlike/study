@@ -1,7 +1,5 @@
 package org.xi.quick.test.lambda.functionalinterface;
 
-import org.xi.quick.test.kotlin.Orange;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;

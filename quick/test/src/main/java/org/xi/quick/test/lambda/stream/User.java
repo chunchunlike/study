@@ -1,6 +1,8 @@
 package org.xi.quick.test.lambda.stream;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private Integer id;
     private String name;

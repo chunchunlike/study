@@ -110,6 +110,7 @@ public class Program {
     }
 
     static List<User> getUserList() {
+
         List<User> userList = Arrays.asList(
                 new User(1, "郗世豪", "男", 76.5),
                 new User(2, "朱凡凡", "女", 50.5),
@@ -129,6 +130,21 @@ public class Program {
         }};
 
         return users;
+    }
+
+    class Program$1 extends ArrayList<User> {
+        {
+            add(new User(1, "郗世豪", "男", 76.5));
+            add(new User(2, "朱凡凡", "女", 50.5));
+        }
+    }
+
+    class Program$2 extends ArrayList<User> {
+        {
+            add(new User(1, "郗世豪", "男", 76.5));
+            add(new User(2, "朱凡凡", "女", 50.5));
+            add(new User(3, "胡永强", "男", 80.8));
+        }
     }
 
     static void selectTest() {
