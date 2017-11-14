@@ -3,7 +3,7 @@ package org.xi.quick.test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.xi.quick.model.UserModel;
+import org.xi.quick.codegenerator.model.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;

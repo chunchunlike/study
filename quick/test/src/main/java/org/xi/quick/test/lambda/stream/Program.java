@@ -1,11 +1,21 @@
 package org.xi.quick.test.lambda.stream;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Program {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+
+        List<Integer> ids = new ArrayList<>();
+        ids.add(1);
+        ids.add(2);
+        ids.add(4);
+        System.out.println(ids.stream().map(o->o.toString()).collect(Collectors.joining(",","(",")")));
+        if(true) return;
+
 
         printSplitLine("customCollectorTest");
         customCollectorTest();
