@@ -1,12 +1,14 @@
 package org.xi.quick.docbuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.xi.quick.docbuilder.utils.DocGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class DocbuilderApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -23,5 +25,4 @@ public class DocbuilderApplication implements CommandLineRunner {
         docGenerator.generateParameterDoc();
         docGenerator.generateApiDoc();
     }
-
 }

@@ -356,7 +356,7 @@ public class DocGenerator {
         if (files != null) {
             for (File file : files) {
                 String fileName = file.getName();
-                if (fileName.endsWith(".java") && !fileName.endsWith("Example.java")) {
+                if (fileName.endsWith(".java")) {
 
                     String className = fileName.substring(0, fileName.length() - 5);
                     classNameList.add(className);
@@ -389,7 +389,7 @@ public class DocGenerator {
         if (files != null) {
             for (File file : files) {
                 String fileName = file.getName();
-                if (fileName.endsWith(".java")) {
+                if (fileName.endsWith("Parameter.java")) {
 
                     String className = fileName.substring(0, fileName.length() - 5);
                     classNameList.add(className);
