@@ -8,6 +8,14 @@ import java.util.List;
  */
 public class FunctionEntity {
 
+    public FunctionEntity() {
+        this.name = "";
+        this.remark = "";
+        this.author = "";
+        this.type = "";
+        this.desc = "";
+    }
+
     private String name;
     private String remark;
     private String author;

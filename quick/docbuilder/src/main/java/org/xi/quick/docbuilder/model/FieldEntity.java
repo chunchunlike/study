@@ -6,6 +6,14 @@ package org.xi.quick.docbuilder.model;
  */
 public class FieldEntity {
 
+    public FieldEntity() {
+        this.fieldType = "";
+        this.fieldName = "";
+        this.remark = "";
+        this.insertNotNull = false;
+        this.updateNotNull = false;
+    }
+
     private String fieldType;
     private String fieldName;
     private String remark;
