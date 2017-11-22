@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +45,7 @@ public class DocGenerator {
     String outputPath;
 
     @Value("${function.addmatch}")
-    String addmMtch;
+    String addmMatch;
 
     @Value("${function.updatematch}")
     String updateMatch;
@@ -86,7 +87,9 @@ public class DocGenerator {
                     continue;
                 }
 
-                if (line.startsWith("*") && !line.endsWith("*/")) {
+                if (line.startsWith("/**")) {
+                    fieldEntity.setRemark("");
+                } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
                 } else if (line.startsWith("@CheckFieldAnnotation")) {
                     this.setFieldInsertAndUpdate(fieldEntity, line);
@@ -143,7 +146,9 @@ public class DocGenerator {
                     continue;
                 }
 
-                if (line.startsWith("*") && !line.endsWith("*/")) {
+                if (line.startsWith("/**")) {
+                    fieldEntity.setRemark("");
+                } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
                 } else if (line.endsWith(";")) {
                     this.setFieldNameAndType(fieldEntity, line);
@@ -200,9 +205,11 @@ public class DocGenerator {
                 }
 
                 if (line.startsWith("//region")) {
-                    tempRemark = line.replace("//region", "");
+                    tempRemark = line.replace("//region", "").trim();
                 } else if (line.startsWith("//endregion")) {
                     tempRemark = "";
+                } else if (line.startsWith("/**")) {
+                    fieldEntity.setRemark("");
                 } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
                 } else if (line.startsWith("private") && line.endsWith(";") && !line.contains("orderByMap")) {
@@ -264,7 +271,7 @@ public class DocGenerator {
                         } else if (patternVersion.matcher(line).find()) {
                             Matcher matcher = patternAuthor2.matcher(line);
                             if (matcher.find()) {
-                                functionEntity.setAuthor(matcher.group());
+                                functionEntity.setAuthor(matcher.group().replace("由", ""));
                             }
                         }
                     } else {
@@ -314,101 +321,23 @@ public class DocGenerator {
 
     public void generateModelDoc() throws IOException, TemplateException {
 
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("models.html");
-
-        File[] files = DirectoryUtil.getAllFiles(modelPath);
-        List<String> classNameList = new ArrayList<>();
-        List<ModelEntity> modelList = new ArrayList<>();
-        if (files != null) {
-            for (File file : files) {
-                String fileName = file.getName();
-                if (fileName.endsWith(".java") && !fileName.endsWith("Example.java")) {
-
-                    String className = fileName.substring(0, fileName.length() - 5);
-                    classNameList.add(className);
-
-                    ModelEntity entity = this.getModelEntity(file);
-                    modelList.add(entity);
-
-                    modelMap.put(className, entity);
-                }
-            }
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("classNameList", classNameList);
-        map.put("classList", modelList);
-
-        OutputStream stream = new FileOutputStream(outputPath + "models.html");
-        Writer out = new OutputStreamWriter(stream);
-        template.process(map, out);
+        createModelDoc(modelPath, "models.html",
+                fileName -> fileName.endsWith(".java") && !fileName.endsWith("Example.java"),
+                file -> this.getModelEntity(file));
     }
 
     public void generateVoDoc() throws IOException, TemplateException {
 
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("models.html");
-
-        File[] files = DirectoryUtil.getAllFiles(voPath);
-        List<String> classNameList = new ArrayList<>();
-        List<ModelEntity> modelList = new ArrayList<>();
-        if (files != null) {
-            for (File file : files) {
-                String fileName = file.getName();
-                if (fileName.endsWith(".java")) {
-
-                    String className = fileName.substring(0, fileName.length() - 5);
-                    classNameList.add(className);
-
-                    ModelEntity entity = this.getVoEntity(file);
-                    modelList.add(entity);
-
-                    modelMap.put(className, entity);
-                }
-            }
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("classNameList", classNameList);
-        map.put("classList", modelList);
-
-        OutputStream stream = new FileOutputStream(outputPath + "vos.html");
-        Writer out = new OutputStreamWriter(stream);
-        template.process(map, out);
+        createModelDoc(voPath, "vos.html",
+                fileName -> fileName.endsWith(".java"),
+                file -> this.getVoEntity(file));
     }
 
     public void generateParameterDoc() throws IOException, TemplateException {
 
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("models.html");
-
-        File[] files = DirectoryUtil.getAllFiles(parameterPath);
-        List<String> classNameList = new ArrayList<>();
-        List<ModelEntity> modelList = new ArrayList<>();
-        if (files != null) {
-            for (File file : files) {
-                String fileName = file.getName();
-                if (fileName.endsWith("Parameter.java")) {
-
-                    String className = fileName.substring(0, fileName.length() - 5);
-                    classNameList.add(className);
-
-                    ModelEntity entity = this.getParameterEntity(file);
-                    modelList.add(entity);
-
-                    modelMap.put(className, entity);
-                }
-            }
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("classNameList", classNameList);
-        map.put("classList", modelList);
-
-        OutputStream stream = new FileOutputStream(outputPath + "parameters.html");
-        Writer out = new OutputStreamWriter(stream);
-        template.process(map, out);
+        createModelDoc(parameterPath, "parameters.html",
+                fileName -> fileName.endsWith("Parameter.java"),
+                file -> this.getParameterEntity(file));
     }
 
     /**
@@ -418,27 +347,84 @@ public class DocGenerator {
      * @throws TemplateException
      */
     public void generateApiDoc() throws IOException, TemplateException {
+
         String outFilePath = outputPath + "api/";
         DirectoryUtil.createIfNotExists(outFilePath);
 
         freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
         Template template = freeMarkerConfiguration.getTemplate("api.html");
 
-        File[] files = DirectoryUtil.getAllFiles(apiPath);
+        String[] paths = apiPath.split(",");
 
-        if (files != null) {
-            for (File file : files) {
-                String fileName = file.getName();
-                if (fileName.endsWith(".java")) {
+        for (String path : paths) {
 
-                    ApiEntity entity = this.getApiEntity(file);
+            File[] files = DirectoryUtil.getAllFiles(path);
 
-                    OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
-                    Writer out = new OutputStreamWriter(stream);
-                    template.process(entity, out);
+            if (files != null) {
+                for (File file : files) {
+                    String fileName = file.getName();
+                    if (fileName.endsWith(".java")) {
+
+                        ApiEntity entity = this.getApiEntity(file);
+
+                        OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
+                        Writer out = new OutputStreamWriter(stream);
+                        template.process(entity, out);
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * 生成实体类文档
+     *
+     * @param pathStr
+     * @param outFileName
+     * @param nameMatch
+     * @param getEntity
+     * @throws IOException
+     * @throws TemplateException
+     */
+    private void createModelDoc(String pathStr, String outFileName,
+                                Function<String, Boolean> nameMatch,
+                                Function<File, ModelEntity> getEntity) throws IOException, TemplateException {
+
+        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
+        Template template = freeMarkerConfiguration.getTemplate("models.html");
+
+        String[] paths = pathStr.split(",");
+        List<String> classNameList = new ArrayList<>();
+        List<ModelEntity> modelList = new ArrayList<>();
+
+        for (String path : paths) {
+
+            File[] files = DirectoryUtil.getAllFiles(path);
+            if (files != null) {
+                for (File file : files) {
+                    String fileName = file.getName();
+
+                    if (nameMatch.apply(fileName)) {
+
+                        String className = fileName.substring(0, fileName.length() - 5);
+                        classNameList.add(className);
+
+                        ModelEntity entity = getEntity.apply(file);
+                        modelList.add(entity);
+
+                        modelMap.put(className, entity);
+                    }
+                }
+            }
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("classNameList", classNameList);
+        map.put("classList", modelList);
+
+        OutputStream stream = new FileOutputStream(outputPath + outFileName);
+        Writer out = new OutputStreamWriter(stream, "UTF-8");
+        template.process(map, out);
     }
 
     /**
@@ -447,7 +433,7 @@ public class DocGenerator {
      * @param fieldEntity
      * @param line
      */
-    public void setFieldNameAndType(FieldEntity fieldEntity, String line) {
+    private void setFieldNameAndType(FieldEntity fieldEntity, String line) {
 
         line = line.replace("private", "").split("=")[0].replace(";", "").trim();
 
@@ -464,7 +450,7 @@ public class DocGenerator {
      * @return
      */
     private String getFunctionType(String functionName) {
-        for (String s : addmMtch.split(",")) {
+        for (String s : addmMatch.split(",")) {
             if (functionName.startsWith(s)) return "add";
         }
         for (String s : updateMatch.split(",")) {
