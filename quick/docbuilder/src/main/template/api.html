@@ -33,10 +33,10 @@
     </ul>
 
     <pre>
-&lt;!-- ${className?uncap_first} --&gt;
-&lt;dubbo:service interface="${packageName}.${className}"
-ref="${className?uncap_first}" group="${properties.dubboConfigGroupInUse}" version="${properties.dubboConfigVersionInUse}"
-timeout="${properties.dubboConfigTimeout}" registry="zookeeper"/&gt;
+&lt;!-- dubbo客户端配置 --&gt;
+&lt;dubbo:registry address="zookeeper://192.168.10.31:2181?backup=192.168.10.32:2181,192.168.10.33:2181"&gt;&lt;/dubbo:registry&gt;
+&lt;dubbo:reference id="${className?uncap_first}" check="false" group="${properties.dubboConfigGroupInUse}"
+    interface="${packageName}.${className}" version="1.0.0" /&gt;
     </pre>
 
     <#list functions as function>
