@@ -9,6 +9,7 @@ import java.util.List;
 public class ApiEntity {
 
     private String className;
+    private String packageName;
     private List<FunctionEntity> functions;
 
     public String getClassName() {
@@ -17,6 +18,14 @@ public class ApiEntity {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public List<FunctionEntity> getFunctions() {

@@ -2,18 +2,14 @@ package org.xi.quick.docbuilder.utils;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xi.quick.docbuilder.factory.FreemarkerConfigurationFactory;
 import org.xi.quick.docbuilder.model.*;
 import org.xi.quick.utils.io.DirectoryUtil;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,32 +19,37 @@ import java.util.regex.Pattern;
  * @date 2017/11/13 09:32
  */
 @Component
-@PropertySource("classpath:config.properties")
 public class DocGenerator {
 
-    @Value("${path.model}")
+    @Autowired
     String modelPath;
 
-    @Value("${path.vo}")
+    @Autowired
     String voPath;
 
-    @Value("${path.parameter}")
+    @Autowired
     String parameterPath;
 
-    @Value("${path.api}")
+    @Autowired
     String apiPath;
 
-    @Value("${path.template}")
+    @Autowired
+    String apiSubPackages;
+
+    @Autowired
     String templatePath;
 
-    @Value("${path.output}")
+    @Autowired
     String outputPath;
 
-    @Value("${function.addmatch}")
+    @Autowired
     String addmMatch;
 
-    @Value("${function.updatematch}")
+    @Autowired
     String updateMatch;
+
+    @Autowired
+    Properties commonProperties;
 
     Map<String, ModelEntity> modelMap = new HashMap<>();
 
@@ -239,11 +240,23 @@ public class DocGenerator {
         try (FileReader reader = new FileReader(file.getPath());
              BufferedReader br = new BufferedReader(reader)) {
 
-            String line;
+            String fileName = file.getName();
+            String className = fileName.substring(0, fileName.length() - 5);
+
+            ApiEntity apiEntity = new ApiEntity();
+            apiEntity.setClassName(className);
+
             List<FunctionEntity> functions = new ArrayList<>();
+
+            String line;
 
             //进入接口内部
             while ((line = br.readLine()) != null) {
+
+                if(line.startsWith("package")) {
+                    String packageName = line.replace("package","").replace(";","").trim();
+                    apiEntity.setPackageName(packageName);
+                }
 
                 if (line.startsWith("public interface")) {
                     break;
@@ -305,18 +318,12 @@ public class DocGenerator {
 
             }
 
-            String fileName = file.getName();
-            String className = fileName.substring(0, fileName.length() - 5);
-
-            ApiEntity apiEntity = new ApiEntity();
-            apiEntity.setClassName(className);
             apiEntity.setFunctions(functions);
             return apiEntity;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-
     }
 
     public void generateModelDoc() throws IOException, TemplateException {
@@ -348,19 +355,22 @@ public class DocGenerator {
      */
     public void generateApiDoc() throws IOException, TemplateException {
 
-        String outFilePath = outputPath + "api/";
-        DirectoryUtil.createIfNotExists(outFilePath);
 
         freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
         Template template = freeMarkerConfiguration.getTemplate("api.html");
 
-        String[] paths = apiPath.split(",");
 
-        for (String path : paths) {
+        for (String subPackage : apiSubPackages.split(",")) {
+            String outFilePath = outputPath + "api/" + subPackage + "/";
+            String dubboConfigOutFilePath = outputPath + "dubboConfig/";
+            DirectoryUtil.createIfNotExists(outFilePath);
+            DirectoryUtil.createIfNotExists(dubboConfigOutFilePath);
 
-            File[] files = DirectoryUtil.getAllFiles(path);
+            File[] files = DirectoryUtil.getAllFiles(apiPath + subPackage);
 
             if (files != null) {
+                List<ApiEntity> apiEntities = new ArrayList<>();
+
                 for (File file : files) {
                     String fileName = file.getName();
                     if (fileName.endsWith(".java")) {
@@ -370,50 +380,59 @@ public class DocGenerator {
                         OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
                         Writer out = new OutputStreamWriter(stream);
                         template.process(entity, out);
+
+                        apiEntities.add(entity);
                     }
                 }
+
+                Template dubboConfigTemplate = freeMarkerConfiguration.getTemplate("dubboConfigXml.html");
+
+                Map<Object, Object> dubboConfigMap = new HashMap<>();
+                dubboConfigMap.put("apiEntityList", apiEntities);
+                dubboConfigMap.putAll(commonProperties);
+
+                OutputStream stream = new FileOutputStream(dubboConfigOutFilePath + subPackage + ".html");
+                Writer out = new OutputStreamWriter(stream);
+                dubboConfigTemplate.process(dubboConfigMap, out);
             }
         }
+
     }
 
     /**
      * 生成实体类文档
      *
-     * @param pathStr
+     * @param path
      * @param outFileName
      * @param nameMatch
      * @param getEntity
      * @throws IOException
      * @throws TemplateException
      */
-    private void createModelDoc(String pathStr, String outFileName,
+    private void createModelDoc(String path, String outFileName,
                                 Function<String, Boolean> nameMatch,
                                 Function<File, ModelEntity> getEntity) throws IOException, TemplateException {
 
         freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
         Template template = freeMarkerConfiguration.getTemplate("models.html");
 
-        String[] paths = pathStr.split(",");
         List<String> classNameList = new ArrayList<>();
         List<ModelEntity> modelList = new ArrayList<>();
 
-        for (String path : paths) {
+        File[] files = DirectoryUtil.getAllFiles(path);
+        if (files != null) {
+            for (File file : files) {
+                String fileName = file.getName();
 
-            File[] files = DirectoryUtil.getAllFiles(path);
-            if (files != null) {
-                for (File file : files) {
-                    String fileName = file.getName();
+                if (nameMatch.apply(fileName)) {
 
-                    if (nameMatch.apply(fileName)) {
+                    String className = fileName.substring(0, fileName.length() - 5);
+                    classNameList.add(className);
 
-                        String className = fileName.substring(0, fileName.length() - 5);
-                        classNameList.add(className);
+                    ModelEntity entity = getEntity.apply(file);
+                    modelList.add(entity);
 
-                        ModelEntity entity = getEntity.apply(file);
-                        modelList.add(entity);
-
-                        modelMap.put(className, entity);
-                    }
+                    modelMap.put(className, entity);
                 }
             }
         }
