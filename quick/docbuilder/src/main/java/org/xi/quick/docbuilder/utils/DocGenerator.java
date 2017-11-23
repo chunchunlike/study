@@ -376,6 +376,7 @@ public class DocGenerator {
                     if (fileName.endsWith(".java")) {
 
                         ApiEntity entity = this.getApiEntity(file);
+                        entity.setProperties(commonProperties);
 
                         OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
                         Writer out = new OutputStreamWriter(stream);

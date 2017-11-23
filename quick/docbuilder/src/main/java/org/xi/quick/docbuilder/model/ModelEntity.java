@@ -1,6 +1,7 @@
 package org.xi.quick.docbuilder.model;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author 郗世豪（xish@cloud-young.com）
@@ -10,6 +11,7 @@ public class ModelEntity {
 
     private String className;
     private List<FieldEntity> fields;
+    private Properties properties;
 
     public String getClassName() {
         return className;
@@ -25,6 +27,14 @@ public class ModelEntity {
 
     public void setFields(List<FieldEntity> fields) {
         this.fields = fields;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 
     @Override

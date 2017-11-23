@@ -32,6 +32,13 @@
         </#list>
     </ul>
 
+    <pre>
+&lt;!-- ${className?uncap_first} --&gt;
+&lt;dubbo:service interface="${packageName}.${className}"
+ref="${className?uncap_first}" group="${properties.dubboConfigGroupInUse}" version="${properties.dubboConfigVersionInUse}"
+timeout="${properties.dubboConfigTimeout}" registry="zookeeper"/&gt;
+    </pre>
+
     <#list functions as function>
         <h2 id="${function.name?if_exists}"><#if (function.remark?? && function.remark != '')>${function.remark}<#else>没注释方法</#if></h2>
         服务支持：${function.author?if_exists}

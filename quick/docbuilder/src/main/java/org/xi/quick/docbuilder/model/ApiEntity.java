@@ -1,6 +1,7 @@
 package org.xi.quick.docbuilder.model;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author 郗世豪（xish@cloud-young.com）
@@ -11,6 +12,7 @@ public class ApiEntity {
     private String className;
     private String packageName;
     private List<FunctionEntity> functions;
+    private Properties properties;
 
     public String getClassName() {
         return className;
@@ -34,5 +36,13 @@ public class ApiEntity {
 
     public void setFunctions(List<FunctionEntity> functions) {
         this.functions = functions;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 }

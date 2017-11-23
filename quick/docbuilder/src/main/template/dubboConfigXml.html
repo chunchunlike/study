@@ -10,26 +10,11 @@
 
 <body>
 
-    <a href="#config">配置</a>
-    <a href="#inuse">实际</a>
-
-    <h4 id="config">配置</h4>
     <pre>
 <#list apiEntityList as entity>
 &lt;!-- ${entity.className?uncap_first} --&gt;
 &lt;dubbo:service interface="${entity.packageName}.${entity.className}"
 ref="${entity.className?uncap_first}" group="${dubboConfigGroup}" version="${dubboConfigVersion}"
-timeout="${dubboConfigTimeout}" registry="zookeeper"/&gt;
-
-</#list>
-    </pre>
-
-    <h4 id="inuse">实际</h4>
-    <pre>
-<#list apiEntityList as entity>
-&lt;!-- ${entity.className?uncap_first} --&gt;
-&lt;dubbo:service interface="${entity.packageName}.${entity.className}"
-ref="${entity.className?uncap_first}" group="${dubboConfigGroupInUse}" version="${dubboConfigVersionInUse}"
 timeout="${dubboConfigTimeout}" registry="zookeeper"/&gt;
 
 </#list>
