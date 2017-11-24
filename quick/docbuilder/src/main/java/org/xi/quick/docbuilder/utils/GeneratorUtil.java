@@ -209,7 +209,7 @@ public class GeneratorUtil {
                     fieldEntity.setRemark("");
                 } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
-                } else if (line.startsWith("private static") && line.endsWith(";") && !line.contains("orderByMap")) {
+                } else if (line.startsWith("private ") && line.endsWith(";") && !line.contains("orderByMap")) {
                     setFieldNameAndType(fieldEntity, line);
                     if (fieldEntity.getRemark() == null || fieldEntity.getRemark().isEmpty()) {
                         fieldEntity.setRemark(getRemark(tempRemark, fieldEntity.getFieldType(), fieldEntity.getFieldName()));
@@ -268,7 +268,7 @@ public class GeneratorUtil {
             FunctionEntity functionEntity = new FunctionEntity();
             while ((line = br.readLine()) != null) {
 
-                line = line.trim();
+                line = line.replace("public", "").trim();
 
                 if (line.isEmpty()) continue;
 
@@ -337,7 +337,7 @@ public class GeneratorUtil {
      */
     private void setFieldNameAndType(FieldEntity fieldEntity, String line) {
 
-        line = line.replace("private static", "").split("=")[0].replace(";", "").trim();
+        line = line.replace("private", "").split("=")[0].replace(";", "").trim();
 
         int lastIndex = line.lastIndexOf(" ");
 
