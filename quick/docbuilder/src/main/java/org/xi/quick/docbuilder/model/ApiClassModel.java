@@ -1,5 +1,7 @@
 package org.xi.quick.docbuilder.model;
 
+import org.xi.quick.docbuilder.entity.FunctionEntity;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -7,7 +9,7 @@ import java.util.Properties;
  * @author 郗世豪（xish@cloud-young.com）
  * @date 2017/11/13 09:34
  */
-public class ApiEntity {
+public class ApiClassModel {
 
     private String className;
     private String packageName;

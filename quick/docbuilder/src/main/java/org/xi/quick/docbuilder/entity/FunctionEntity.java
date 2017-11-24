@@ -1,4 +1,4 @@
-package org.xi.quick.docbuilder.model;
+package org.xi.quick.docbuilder.entity;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class FunctionEntity {
     private String author;
     private String type;
 
-    private ParameterEntity returnType;
-    private List<ParameterEntity> params;
+    private ParameterTypeEntity returnType;
+    private List<ParameterTypeEntity> params;
 
     private String desc;
 
@@ -58,19 +58,19 @@ public class FunctionEntity {
         this.type = type;
     }
 
-    public ParameterEntity getReturnType() {
+    public ParameterTypeEntity getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(ParameterEntity returnType) {
+    public void setReturnType(ParameterTypeEntity returnType) {
         this.returnType = returnType;
     }
 
-    public List<ParameterEntity> getParams() {
+    public List<ParameterTypeEntity> getParams() {
         return params;
     }
 
-    public void setParams(List<ParameterEntity> params) {
+    public void setParams(List<ParameterTypeEntity> params) {
         this.params = params;
     }
 

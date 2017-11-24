@@ -1,5 +1,7 @@
 package org.xi.quick.docbuilder.model;
 
+import org.xi.quick.docbuilder.entity.FieldEntity;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -7,7 +9,7 @@ import java.util.Properties;
  * @author 郗世豪（xish@cloud-young.com）
  * @date 2017/11/13 09:33
  */
-public class ModelEntity {
+public class ModelClassModel {
 
     private String className;
     private List<FieldEntity> fields;
@@ -39,7 +41,7 @@ public class ModelEntity {
 
     @Override
     public String toString() {
-        return "ModelEntity{" +
+        return "ModelClassModel{" +
                 "className='" + className + '\'' +
                 ", fields=" + fields +
                 '}';

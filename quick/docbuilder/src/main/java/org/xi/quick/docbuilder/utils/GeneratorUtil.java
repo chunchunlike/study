@@ -1,46 +1,27 @@
 package org.xi.quick.docbuilder.utils;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.xi.quick.docbuilder.factory.FreemarkerConfigurationFactory;
+import org.xi.quick.docbuilder.entity.*;
 import org.xi.quick.docbuilder.model.*;
-import org.xi.quick.utils.io.DirectoryUtil;
 
-import java.io.*;
-import java.util.*;
-import java.util.function.Function;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author 郗世豪（xish@cloud-young.com）
- * @date 2017/11/13 09:32
+ * @date 2017/11/24 11:07
  */
-@Component
-public class DocGenerator {
-
-    @Autowired
-    String modelPath;
-
-    @Autowired
-    String voPath;
-
-    @Autowired
-    String parameterPath;
-
-    @Autowired
-    String apiPath;
-
-    @Autowired
-    String apiSubPackages;
-
-    @Autowired
-    String templatePath;
-
-    @Autowired
-    String outputPath;
+@Component("generatorUtil")
+public class GeneratorUtil {
 
     @Autowired
     String addmMatch;
@@ -48,12 +29,17 @@ public class DocGenerator {
     @Autowired
     String updateMatch;
 
-    @Autowired
-    Properties commonProperties;
+    /**
+     * 已经生成的所有类型Map
+     */
+    public Map<String, ModelClassModel> MODEL_MAP = new HashMap<>();
 
-    Map<String, ModelEntity> modelMap = new HashMap<>();
-
-    public ModelEntity getModelEntity(File file) {
+    /**
+     * 获取Model类实体
+     * @param file
+     * @return
+     */
+    public ModelClassModel getModelClassModel(File file) {
 
         List<FieldEntity> fields = new ArrayList<>();
 
@@ -93,9 +79,9 @@ public class DocGenerator {
                 } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
                 } else if (line.startsWith("@CheckFieldAnnotation")) {
-                    this.setFieldInsertAndUpdate(fieldEntity, line);
+                    setFieldInsertAndUpdate(fieldEntity, line);
                 } else if (line.endsWith(";")) {
-                    this.setFieldNameAndType(fieldEntity, line);
+                    setFieldNameAndType(fieldEntity, line);
                     fields.add(fieldEntity);
                     fieldEntity = new FieldEntity();
                 }
@@ -106,13 +92,18 @@ public class DocGenerator {
             return null;
         }
 
-        ModelEntity modelEntity = new ModelEntity();
+        ModelClassModel modelEntity = new ModelClassModel();
         modelEntity.setClassName(file.getName().replace(".java", ""));
         modelEntity.setFields(fields);
         return modelEntity;
     }
 
-    public ModelEntity getVoEntity(File file) {
+    /**
+     * 获取Vo类实体
+     * @param file
+     * @return
+     */
+    public ModelClassModel getVoClassModel(File file) {
 
         List<FieldEntity> fields = new ArrayList<>();
 
@@ -152,7 +143,7 @@ public class DocGenerator {
                 } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
                 } else if (line.endsWith(";")) {
-                    this.setFieldNameAndType(fieldEntity, line);
+                    setFieldNameAndType(fieldEntity, line);
                     fields.add(fieldEntity);
                     fieldEntity = new FieldEntity();
                 }
@@ -163,13 +154,18 @@ public class DocGenerator {
             return null;
         }
 
-        ModelEntity modelEntity = new ModelEntity();
+        ModelClassModel modelEntity = new ModelClassModel();
         modelEntity.setClassName(file.getName().replace(".java", ""));
         modelEntity.setFields(fields);
         return modelEntity;
     }
 
-    public ModelEntity getParameterEntity(File file) {
+    /**
+     * 获取Parameter类实体
+     * @param file
+     * @return
+     */
+    public ModelClassModel getParameterClassModel(File file) {
 
         List<FieldEntity> fields = new ArrayList<>();
 
@@ -213,10 +209,10 @@ public class DocGenerator {
                     fieldEntity.setRemark("");
                 } else if (line.startsWith("*") && !line.endsWith("*/")) {
                     fieldEntity.setRemark(fieldEntity.getRemark() + " " + line.replace("*", "").trim());
-                } else if (line.startsWith("private") && line.endsWith(";") && !line.contains("orderByMap")) {
-                    this.setFieldNameAndType(fieldEntity, line);
+                } else if (line.startsWith("private static") && line.endsWith(";") && !line.contains("orderByMap")) {
+                    setFieldNameAndType(fieldEntity, line);
                     if (fieldEntity.getRemark() == null || fieldEntity.getRemark().isEmpty()) {
-                        fieldEntity.setRemark(this.getRemark(tempRemark, fieldEntity.getFieldType(), fieldEntity.getFieldName()));
+                        fieldEntity.setRemark(getRemark(tempRemark, fieldEntity.getFieldType(), fieldEntity.getFieldName()));
                     }
 
                     fields.add(fieldEntity);
@@ -229,13 +225,19 @@ public class DocGenerator {
             return null;
         }
 
-        ModelEntity modelEntity = new ModelEntity();
+        ModelClassModel modelEntity = new ModelClassModel();
         modelEntity.setClassName(file.getName().replace(".java", ""));
         modelEntity.setFields(fields);
         return modelEntity;
     }
 
-    public ApiEntity getApiEntity(File file) {
+    /**
+     * 获取API类实体
+     *
+     * @param file
+     * @return
+     */
+    public ApiClassModel getApiClassModel(File file) {
 
         try (FileReader reader = new FileReader(file.getPath());
              BufferedReader br = new BufferedReader(reader)) {
@@ -243,7 +245,7 @@ public class DocGenerator {
             String fileName = file.getName();
             String className = fileName.substring(0, fileName.length() - 5);
 
-            ApiEntity apiEntity = new ApiEntity();
+            ApiClassModel apiEntity = new ApiClassModel();
             apiEntity.setClassName(className);
 
             List<FunctionEntity> functions = new ArrayList<>();
@@ -300,15 +302,15 @@ public class DocGenerator {
                             if (tmpLine.endsWith(";")) break;
                         }
                     }
-                    this.setFunctionParams(functionEntity, line);
+                    setFunctionParams(functionEntity, line);
                     String func = line.split("\\(")[0];
                     int lastIndex = func.lastIndexOf(" ");
                     functionEntity.setName(func.substring(lastIndex).trim());
-                    functionEntity.setType(this.getFunctionType(functionEntity.getName()));
+                    functionEntity.setType(getFunctionType(functionEntity.getName()));
 
                     //获取返回类型
                     String returnType = func.substring(0, lastIndex).trim();
-                    functionEntity.setReturnType(new ParameterEntity(returnType, modelMap.get(this.getClassType(returnType))));
+                    functionEntity.setReturnType(new ParameterTypeEntity(returnType, MODEL_MAP.get(getClassType(returnType))));
 
                     functionEntity.setDesc(line.replaceAll("\\s{1,}", " "));
 
@@ -326,126 +328,6 @@ public class DocGenerator {
         }
     }
 
-    public void generateModelDoc() throws IOException, TemplateException {
-
-        createModelDoc(modelPath, "models.html",
-                fileName -> fileName.endsWith(".java") && !fileName.endsWith("Example.java"),
-                file -> this.getModelEntity(file));
-    }
-
-    public void generateVoDoc() throws IOException, TemplateException {
-
-        createModelDoc(voPath, "vos.html",
-                fileName -> fileName.endsWith(".java"),
-                file -> this.getVoEntity(file));
-    }
-
-    public void generateParameterDoc() throws IOException, TemplateException {
-
-        createModelDoc(parameterPath, "parameters.html",
-                fileName -> fileName.endsWith("Parameter.java"),
-                file -> this.getParameterEntity(file));
-    }
-
-    /**
-     * 生成API文档
-     *
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public void generateApiDoc() throws IOException, TemplateException {
-
-
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("api.html");
-
-
-        for (String subPackage : apiSubPackages.split(",")) {
-            String outFilePath = outputPath + "api/" + subPackage + "/";
-            String dubboConfigOutFilePath = outputPath + "dubboConfig/";
-            DirectoryUtil.createIfNotExists(outFilePath);
-            DirectoryUtil.createIfNotExists(dubboConfigOutFilePath);
-
-            File[] files = DirectoryUtil.getAllFiles(apiPath + subPackage);
-
-            if (files != null) {
-                List<ApiEntity> apiEntities = new ArrayList<>();
-
-                for (File file : files) {
-                    String fileName = file.getName();
-                    if (fileName.endsWith(".java")) {
-
-                        ApiEntity entity = this.getApiEntity(file);
-                        entity.setProperties(commonProperties);
-
-                        OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
-                        Writer out = new OutputStreamWriter(stream);
-                        template.process(entity, out);
-
-                        apiEntities.add(entity);
-                    }
-                }
-
-                Template dubboConfigTemplate = freeMarkerConfiguration.getTemplate("dubboConfigXml.html");
-
-                Map<Object, Object> dubboConfigMap = new HashMap<>();
-                dubboConfigMap.put("apiEntityList", apiEntities);
-                dubboConfigMap.putAll(commonProperties);
-
-                OutputStream stream = new FileOutputStream(dubboConfigOutFilePath + subPackage + ".html");
-                Writer out = new OutputStreamWriter(stream);
-                dubboConfigTemplate.process(dubboConfigMap, out);
-            }
-        }
-
-    }
-
-    /**
-     * 生成实体类文档
-     *
-     * @param path
-     * @param outFileName
-     * @param nameMatch
-     * @param getEntity
-     * @throws IOException
-     * @throws TemplateException
-     */
-    private void createModelDoc(String path, String outFileName,
-                                Function<String, Boolean> nameMatch,
-                                Function<File, ModelEntity> getEntity) throws IOException, TemplateException {
-
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("models.html");
-
-        List<String> classNameList = new ArrayList<>();
-        List<ModelEntity> modelList = new ArrayList<>();
-
-        File[] files = DirectoryUtil.getAllFiles(path);
-        if (files != null) {
-            for (File file : files) {
-                String fileName = file.getName();
-
-                if (nameMatch.apply(fileName)) {
-
-                    String className = fileName.substring(0, fileName.length() - 5);
-                    classNameList.add(className);
-
-                    ModelEntity entity = getEntity.apply(file);
-                    modelList.add(entity);
-
-                    modelMap.put(className, entity);
-                }
-            }
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("classNameList", classNameList);
-        map.put("classList", modelList);
-
-        OutputStream stream = new FileOutputStream(outputPath + outFileName);
-        Writer out = new OutputStreamWriter(stream, "UTF-8");
-        template.process(map, out);
-    }
 
     /**
      * 设置字段类型和名称
@@ -455,7 +337,7 @@ public class DocGenerator {
      */
     private void setFieldNameAndType(FieldEntity fieldEntity, String line) {
 
-        line = line.replace("private", "").split("=")[0].replace(";", "").trim();
+        line = line.replace("private static", "").split("=")[0].replace(";", "").trim();
 
         int lastIndex = line.lastIndexOf(" ");
 
@@ -549,12 +431,12 @@ public class DocGenerator {
         Matcher matcher = pattern.matcher(line);
         if (matcher.find()) {
 
-            List<ParameterEntity> params = new ArrayList<>();
+            List<ParameterTypeEntity> params = new ArrayList<>();
             String matchStr = matcher.group();
             String[] array = matchStr.substring(1, matchStr.length() - 1).split(",");
             for (String param : array) {
                 String paramType = param.split("\\s{1,}")[0];
-                params.add(new ParameterEntity(paramType, modelMap.get(this.getClassType(paramType))));
+                params.add(new ParameterTypeEntity(paramType, MODEL_MAP.get(getClassType(paramType))));
             }
             function.setParams(params);
         }

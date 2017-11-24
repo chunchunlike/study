@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class GeneratorAspect {
 
-    @Around(value = "execution(* org.xi.quick.docbuilder.utils.DocGenerator.generateModelDoc(..))")
+    @Around(value = "execution(* org.xi.quick.docbuilder.generator.impl.DocGeneratorImpl.generateModelDoc(..))")
     public Object generateModelDocAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         System.out.println("开始生成Model文档...");
@@ -23,7 +23,7 @@ public class GeneratorAspect {
         return object;
     }
 
-    @Around(value = "execution(* org.xi.quick.docbuilder.utils.DocGenerator.generateVoDoc(..))")
+    @Around(value = "execution(* org.xi.quick.docbuilder.generator.impl.DocGeneratorImpl.generateVoDoc(..))")
     public Object generateVoDocAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         System.out.println("开始生成Vo文档...");
@@ -33,7 +33,7 @@ public class GeneratorAspect {
         return object;
     }
 
-    @Around(value = "execution(* org.xi.quick.docbuilder.utils.DocGenerator.generateParameterDoc(..))")
+    @Around(value = "execution(* org.xi.quick.docbuilder.generator.impl.DocGeneratorImpl.generateParameterDoc(..))")
     public Object generateParameterDocAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         System.out.println("开始生成Parameter文档...");
@@ -43,7 +43,7 @@ public class GeneratorAspect {
         return object;
     }
 
-    @Around(value = "execution(* org.xi.quick.docbuilder.utils.DocGenerator.generateApiDoc(..))")
+    @Around(value = "execution(* org.xi.quick.docbuilder.generator.impl.DocGeneratorImpl.generateApiDoc(..))")
     public Object generateApiDocAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         System.out.println("开始生成API文档...");

@@ -1,4 +1,4 @@
-package org.xi.quick.docbuilder.model;
+package org.xi.quick.docbuilder.entity;
 
 /**
  * @author 郗世豪（xish@cloud-young.com）
