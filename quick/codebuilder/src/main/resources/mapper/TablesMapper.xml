@@ -13,12 +13,12 @@
 
     <select id="getTable" resultMap="resultMap" parameterType="java.lang.String">
         SELECT
-            TABLE_CATALOG,
-            TABLE_SCHEMA,
-            TABLE_NAME,
-            TABLE_TYPE,
-            TABLE_ROWS,
-            TABLE_COMMENT
+            `TABLE_CATALOG`,
+            `TABLE_SCHEMA`,
+            `TABLE_NAME`,
+            `TABLE_TYPE`,
+            `TABLE_ROWS`,
+            `TABLE_COMMENT`
         FROM
             TABLES
         <where>
