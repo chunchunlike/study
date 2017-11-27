@@ -1,16 +1,12 @@
 package org.xi.quick.codebuilder.model;
 
 import org.xi.quick.codebuilder.entity.Table;
+import org.xi.quick.codebuilder.utils.StringUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableModel {
-
-    private String databaseName;
-    private String tableName;
-    private String tableComment;
-
-    private List<ColumnModel> columns;
 
     public TableModel() {
 
@@ -21,6 +17,14 @@ public class TableModel {
         this.tableName = table.getTableName();
         this.tableComment = table.getTableComment();
     }
+
+    //region 默认
+
+    private String databaseName;
+    private String tableName;
+    private String tableComment;
+
+    private List<ColumnModel> columns;
 
     public String getDatabaseName() {
         return databaseName;
@@ -53,4 +57,38 @@ public class TableModel {
     public void setColumns(List<ColumnModel> columns) {
         this.columns = columns;
     }
+
+    //endregion
+
+    //region 扩展
+
+    public String getTableClassName() {
+        return StringUtil.getCamelCaseName(this.tableName);
+    }
+
+    public String getTableClassNameFirstLower() {
+        return StringUtil.getFirstLower(StringUtil.getCamelCaseName(this.tableName));
+    }
+
+    public ColumnModel getPrimaryKey() {
+        List<ColumnModel> priKeys =
+                this.columns
+                        .stream()
+                        .filter(column -> column.getColumnKey().equals("PRI"))
+                        .collect(Collectors.toList());
+
+        return priKeys.get(0);
+    }
+
+    public Boolean getHasIsActive() {
+        List<ColumnModel> isActiveColumns =
+                this.columns
+                        .stream()
+                        .filter(column -> column.getColumnName().equals("is_active"))
+                        .collect(Collectors.toList());
+
+        return isActiveColumns != null && isActiveColumns.size() == 1;
+    }
+
+    //endregion
 }

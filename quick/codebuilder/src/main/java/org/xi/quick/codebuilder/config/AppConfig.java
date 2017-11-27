@@ -45,6 +45,8 @@ public class AppConfig {
             e.printStackTrace();
         }
 
+        commonPropertiesMap.put("now", new Date());
+
         return commonPropertiesMap;
     }
 

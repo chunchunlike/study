@@ -19,9 +19,9 @@ public class FreemarkerUtil {
      * @throws IOException
      * @throws TemplateException
      */
-    public static void generate(FreemarkerModel outModel, String tableName, Object dataModel, String encoding) throws IOException, TemplateException {
+    public static void generate(FreemarkerModel outModel, String tableClassName, Object dataModel, String encoding) throws IOException, TemplateException {
 
-        String absolutePath = getFilePath(outModel, tableName);
+        String absolutePath = getFilePath(outModel, tableClassName);
 
         //创建文件路径
         DirectoryUtil.createIfNotExists(outModel.getAbsoluteDirectory());
@@ -33,18 +33,18 @@ public class FreemarkerUtil {
         }
     }
 
-    public static void delete(FreemarkerModel outModel, String tableName) {
+    public static void delete(FreemarkerModel outModel, String tableClassName) {
 
-        String absolutePath = getFilePath(outModel, tableName);
+        String absolutePath = getFilePath(outModel, tableClassName);
         FileUtil.delete(absolutePath);
     }
 
 
-    static String getFilePath(FreemarkerModel model, String tableName) {
+    static String getFilePath(FreemarkerModel model, String tableClassName) {
 
         String absolutePath = model.getAbsolutePath();
-        if (absolutePath.contains("${tableName}")) {
-            absolutePath = absolutePath.replace("${tableName}", tableName);
+        if (absolutePath.contains("${className}")) {
+            absolutePath = absolutePath.replace("${className}", tableClassName);
         }
         return absolutePath;
     }

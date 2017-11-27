@@ -1,6 +1,8 @@
 package org.xi.quick.codebuilder.model;
 
 import org.xi.quick.codebuilder.entity.Column;
+import org.xi.quick.codebuilder.utils.ColumnUtil;
+import org.xi.quick.codebuilder.utils.StringUtil;
 
 public class ColumnModel {
 
@@ -147,10 +149,18 @@ public class ColumnModel {
 
     //endregion
 
-    //region 扩展属性
+    //region 扩展
 
-    public boolean isNullable() {
-        return this.isNullable.toUpperCase().equals("YES");
+    public String getColumnFieldName() {
+        return StringUtil.getCamelCaseName(this.columnName);
+    }
+
+    public String getColumnFieldNameFirstLower() {
+        return StringUtil.getFirstLower(StringUtil.getCamelCaseName(this.columnName));
+    }
+
+    public String getColumnFieldType() {
+        return ColumnUtil.getFieldType(this.dataType);
     }
 
     //endregion

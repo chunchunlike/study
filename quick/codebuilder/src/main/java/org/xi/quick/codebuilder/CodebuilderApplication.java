@@ -40,6 +40,8 @@ public class CodebuilderApplication implements CommandLineRunner {
 
         List<TableModel> tables = tableService.getTables(null);
         for (TableModel table : tables) {
+            System.out.println("============================================");
+            System.out.println(table.getTableName());
             generate(table);
         }
     }
@@ -49,7 +51,7 @@ public class CodebuilderApplication implements CommandLineRunner {
             Map<Object, Object> dataModel = new HashMap<>();
             dataModel.putAll(commonPropertiesMap);
             dataModel.put("table", model);
-            FreemarkerUtil.generate(template, model.getTableName(), dataModel, codeEncoding);
+            FreemarkerUtil.generate(template, model.getTableClassName(), dataModel, codeEncoding);
         }
     }
 }
