@@ -11,16 +11,16 @@
         <result column="TABLE_COMMENT" property="tableComment" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getTable" resultMap="resultMap" parameterType="java.lang.String">
+    <select id="getTables" resultMap="resultMap" parameterType="java.lang.String">
         SELECT
-            `TABLE_CATALOG`,
-            `TABLE_SCHEMA`,
-            `TABLE_NAME`,
-            `TABLE_TYPE`,
-            `TABLE_ROWS`,
-            `TABLE_COMMENT`
+        `TABLE_CATALOG`,
+        `TABLE_SCHEMA`,
+        `TABLE_NAME`,
+        `TABLE_TYPE`,
+        `TABLE_ROWS`,
+        `TABLE_COMMENT`
         FROM
-            TABLES
+        TABLES
         <where>
             <if test="databaseName != null and databaseName != ''">
                 TABLE_SCHEMA=#{databaseName}
@@ -29,6 +29,6 @@
                 AND TABLE_NAME=#{tableName}
             </if>
         </where>
-
     </select>
+
 </mapper>

@@ -2,9 +2,9 @@ package org.xi.quick.codebuilder.service;
 
 import org.xi.quick.codebuilder.model.TableModel;
 
+import java.util.List;
+
 public interface TableService {
 
-    TableModel getTable(String tableName);
-
-    TableModel getTable(String databaseName, String tableName);
+    List<TableModel> getTables(String tableName);
 }
