@@ -95,14 +95,12 @@ public class DocGeneratorImpl implements DocGenerator {
      */
     public void generateApiDoc() throws IOException, TemplateException {
 
-
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("api.ftl");
-
+        Template template = getTemplate("api.ftl");
 
         for (String subPackage : apiSubPackages.split(",")) {
             String outFilePath = outputPath + "api/" + subPackage + "/";
             String dubboConfigOutFilePath = outputPath + "dubboConfig/";
+
             DirectoryUtil.createIfNotExists(outFilePath);
             DirectoryUtil.createIfNotExists(dubboConfigOutFilePath);
 
@@ -118,23 +116,19 @@ public class DocGeneratorImpl implements DocGenerator {
                         ApiClassModel entity = generatorUtil.getApiClassModel(file);
                         entity.setProperties(commonProperties);
 
-                        OutputStream stream = new FileOutputStream(outFilePath + entity.getClassName() + ".html");
-                        Writer out = new OutputStreamWriter(stream);
-                        template.process(entity, out);
+                        process(outFilePath + entity.getClassName() + ".html", template, entity);
 
                         apiEntities.add(entity);
                     }
                 }
 
-                Template dubboConfigTemplate = freeMarkerConfiguration.getTemplate("dubboConfigXml.ftl");
+                Template dubboConfigTemplate = getTemplate("dubboConfigXml.ftl");
 
                 Map<Object, Object> dubboConfigMap = new HashMap<>();
                 dubboConfigMap.put("apiEntityList", apiEntities);
                 dubboConfigMap.putAll(commonProperties);
 
-                OutputStream stream = new FileOutputStream(dubboConfigOutFilePath + subPackage + ".html");
-                Writer out = new OutputStreamWriter(stream);
-                dubboConfigTemplate.process(dubboConfigMap, out);
+                process(dubboConfigOutFilePath + subPackage + ".html", dubboConfigTemplate, dubboConfigMap);
             }
         }
 
@@ -154,8 +148,7 @@ public class DocGeneratorImpl implements DocGenerator {
                                 Function<String, Boolean> nameMatch,
                                 Function<File, ModelClassModel> getEntity) throws IOException, TemplateException {
 
-        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
-        Template template = freeMarkerConfiguration.getTemplate("models.ftl");
+        Template template = getTemplate("models.ftl");
 
         List<String> classNameList = new ArrayList<>();
         List<ModelClassModel> modelList = new ArrayList<>();
@@ -182,8 +175,22 @@ public class DocGeneratorImpl implements DocGenerator {
         map.put("classNameList", classNameList);
         map.put("classList", modelList);
 
-        OutputStream stream = new FileOutputStream(outputPath + outFileName);
-        Writer out = new OutputStreamWriter(stream, "UTF-8");
-        template.process(map, out);
+        process(outputPath + outFileName, template, map);
+    }
+
+    private Template getTemplate(String templateName) throws IOException {
+
+        freemarker.template.Configuration freeMarkerConfiguration = FreemarkerConfigurationFactory.createConfiguration(templatePath);
+        Template template = freeMarkerConfiguration.getTemplate(templateName, "UTF-8");
+
+        return template;
+    }
+
+    private void process(String path, Template template, Object dataModel) throws IOException, TemplateException {
+
+        try (OutputStream stream = new FileOutputStream(path);
+             Writer out = new OutputStreamWriter(stream, "UTF-8")) {
+            template.process(dataModel, out);
+        }
     }
 }

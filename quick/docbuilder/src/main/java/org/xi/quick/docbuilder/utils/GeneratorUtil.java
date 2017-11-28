@@ -5,10 +5,7 @@ import org.springframework.stereotype.Component;
 import org.xi.quick.docbuilder.entity.*;
 import org.xi.quick.docbuilder.model.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +33,7 @@ public class GeneratorUtil {
 
     /**
      * 获取Model类实体
+     *
      * @param file
      * @return
      */
@@ -100,6 +98,7 @@ public class GeneratorUtil {
 
     /**
      * 获取Vo类实体
+     *
      * @param file
      * @return
      */
@@ -162,6 +161,7 @@ public class GeneratorUtil {
 
     /**
      * 获取Parameter类实体
+     *
      * @param file
      * @return
      */
@@ -169,7 +169,8 @@ public class GeneratorUtil {
 
         List<FieldEntity> fields = new ArrayList<>();
 
-        try (FileReader reader = new FileReader(file.getPath());
+        try (InputStream inputStream = new FileInputStream(file.getAbsolutePath());
+             Reader reader = new InputStreamReader(inputStream, "UTF-8");
              BufferedReader br = new BufferedReader(reader)) {
 
             String line;
@@ -239,7 +240,8 @@ public class GeneratorUtil {
      */
     public ApiClassModel getApiClassModel(File file) {
 
-        try (FileReader reader = new FileReader(file.getPath());
+        try (InputStream inputStream = new FileInputStream(file.getAbsolutePath());
+             Reader reader = new InputStreamReader(inputStream, "UTF-8");
              BufferedReader br = new BufferedReader(reader)) {
 
             String fileName = file.getName();
@@ -255,8 +257,8 @@ public class GeneratorUtil {
             //进入接口内部
             while ((line = br.readLine()) != null) {
 
-                if(line.startsWith("package")) {
-                    String packageName = line.replace("package","").replace(";","").trim();
+                if (line.startsWith("package")) {
+                    String packageName = line.replace("package", "").replace(";", "").trim();
                     apiEntity.setPackageName(packageName);
                 }
 
