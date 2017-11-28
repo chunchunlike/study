@@ -1,4 +1,4 @@
-package ${basePackage}.model;
+package ${basePackage}.vo;
 
 <#include "/include/java_copyright.ftl">
 public class ${table.tableClassName}Vo {

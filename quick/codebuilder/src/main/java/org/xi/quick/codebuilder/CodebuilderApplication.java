@@ -37,8 +37,30 @@ public class CodebuilderApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+        generateAll();
+    }
+
+    void generateAll() throws IOException, TemplateException {
 
         List<TableModel> tables = tableService.getTables(null);
+        if (tables == null || tables.isEmpty()) {
+            System.out.println("该数据没有表不存在");
+            return;
+        }
+        for (TableModel table : tables) {
+            System.out.println("============================================");
+            System.out.println(table.getTableName());
+            generate(table);
+        }
+    }
+
+    void generate(String tableName) throws IOException, TemplateException {
+
+        List<TableModel> tables = tableService.getTables(tableName);
+        if (tables == null || tables.isEmpty()) {
+            System.out.println("表" + tableName + "不存在");
+            return;
+        }
         for (TableModel table : tables) {
             System.out.println("============================================");
             System.out.println(table.getTableName());

@@ -36,12 +36,13 @@ public class TableServiceImpl implements TableService {
         for (Table table : tables) {
 
             TableModel model = new TableModel(table);
-            List<Column> columnList = columnsMapper.getColumns(databaseName, tableName);
+            List<Column> columnList = columnsMapper.getColumns(databaseName, table.getTableName());
             List<ColumnModel> columnModels =
                     columnList
                             .stream()
                             .map(entity -> new ColumnModel(entity))
                             .collect(Collectors.toList());
+
             model.setColumns(columnModels);
 
             tableModels.add(model);

@@ -26,6 +26,7 @@ public class ColumnUtil {
         typeMap.put("varchar", "String");
         typeMap.put("char", "String");
         typeMap.put("date", "Date");
+        typeMap.put("datetime", "Date");
         typeMap.put("timestamp", "Date");
     }
 

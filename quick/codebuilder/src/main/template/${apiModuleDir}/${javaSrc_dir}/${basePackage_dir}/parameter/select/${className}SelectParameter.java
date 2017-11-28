@@ -1,5 +1,5 @@
 <#assign className = table.tableClassName>
-package ${basePackage}.parameter;
+package ${basePackage}.parameter.select;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -7,9 +7,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 <#include "/include/java_copyright.ftl">
-public class ${className}QueryParameter implements Serializable {
+public class ${className}SelectParameter implements Serializable {
 
-    public ${className}QueryParameter() {
+    public ${className}SelectParameter() {
         orderByMap = new HashMap<String, String>();
     }
 
@@ -28,7 +28,7 @@ public class ${className}QueryParameter implements Serializable {
         return orderBy;
     }
     <#list table.columns as column>
-    
+
     //region ${column.columnComment}
     <#if column.columnFieldNameFirstLower == 'isActive'>
 
@@ -171,11 +171,11 @@ public class ${className}QueryParameter implements Serializable {
     public void set${column.columnFieldName}Asc() {
         orderByMap.put("${column.tableName}.${column.columnName}", "ASC");
     }
-    
+
     public void set${column.columnFieldName}Desc() {
         orderByMap.put("${column.tableName}.${column.columnName}", "DESC");
     }
-    
+
     //endregion
     </#list>
 }

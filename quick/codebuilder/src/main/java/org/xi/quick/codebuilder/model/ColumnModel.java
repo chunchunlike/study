@@ -163,5 +163,13 @@ public class ColumnModel {
         return ColumnUtil.getFieldType(this.dataType);
     }
 
+    public boolean isAutoIncrement() {
+        return this.extra.toLowerCase().equals("auto_increment");
+    }
+
+    public boolean isPrimaryKey() {
+        return this.columnKey.equals("PRI");
+    }
+
     //endregion
 }
