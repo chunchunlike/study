@@ -32,12 +32,12 @@ public class ColumnModel {
     private String databaseName;
     private String tableName;
     private String columnName;
-    public Long columnPosition;
-    public String columnDefault;
+    private Long columnPosition;
+    private String columnDefault;
     private String isNullable;
     private String dataType;
-    public Long charLength;
-    public Long byteLength;
+    private Long charLength;
+    private Long byteLength;
     private String columnType;
     private String columnKey;
     private String extra;

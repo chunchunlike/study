@@ -4,12 +4,14 @@
 
 package ${basePackage}.service.impl;
 
-import com.cloudyoung.ec.common.model.base.Result;
-import com.cloudyoung.ec.common.model.page.Pagination;
+import org.xi.common.model.Pagination;
 import ${basePackage}.mapper.${className}Mapper;
 import ${basePackage}.model.${className};
 import ${basePackage}.parameter.select.${className}SelectParameter;
 import ${basePackage}.vo.${className}Vo;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 

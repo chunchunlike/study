@@ -4,8 +4,8 @@
 
 package ${basePackage}.api.service.impl;
 
-import com.cloudyoung.ec.common.model.base.Result;
-import com.cloudyoung.ec.common.model.page.Pagination;
+import org.xi.common.model.Result;
+import org.xi.common.model.Pagination;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
