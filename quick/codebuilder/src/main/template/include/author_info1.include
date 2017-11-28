@@ -1,3 +1,0 @@
-     * @author ${author}
-     * @date <#if now??>${now?string('yyyy/MM/dd HH:mm')}</#if>
-     * @version ${version}
