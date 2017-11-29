@@ -133,9 +133,9 @@ public class GeneratorServiceImpl implements GeneratorService {
         } else {
             tables = new ArrayList<>();
             for (String tableName : tableNames) {
-                List<TableModel> tmpTableModels = tableService.getTables(tableName);
-                if (tmpTableModels != null && !tmpTableModels.isEmpty()) {
-                    tables.addAll(tmpTableModels);
+                TableModel tableModel = tableService.getTable(tableName);
+                if (tableModel != null) {
+                    tables.add(tableModel);
                 }
             }
         }
