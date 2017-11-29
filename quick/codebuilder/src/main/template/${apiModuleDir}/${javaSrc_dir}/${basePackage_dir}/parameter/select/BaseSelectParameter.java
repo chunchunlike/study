@@ -1,4 +1,3 @@
-<#assign className = table.tableClassName>
 package ${basePackage}.parameter.select;
 
 import java.io.Serializable;

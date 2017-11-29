@@ -30,6 +30,9 @@ public class AppConfig {
     @Value("${codeEncoding}")
     String codeEncoding;
 
+    @Value("${folder.ingored}")
+    String iningoredFolder;
+
     @Bean(name = "commonPropertiesMap")
     public Map<Object, Object> getCommonPropertiesMap() {
 
@@ -81,8 +84,10 @@ public class AppConfig {
 
         for (File file : files) {
 
+            if(file.isHidden()) continue;
+
             String templateRelativePath = file.getAbsolutePath().substring(dirAbsolutePath.length() + 1);
-            if(templateRelativePath.startsWith("include/")) continue;
+            if (isIngoredFolder(templateRelativePath) || !templateRelativePath.contains("${className}")) continue;
 
             Template template = freeMarkerConfiguration.getTemplate(templateRelativePath, codeEncoding);
 
@@ -92,6 +97,59 @@ public class AppConfig {
         }
 
         return result;
+    }
+
+    /**
+     * 所有运行一次的模版
+     *
+     * @return
+     * @throws IOException
+     */
+    @Bean(name = "allOnceTemplates")
+    public List<FreemarkerModel> getAllOnceTemplates(freemarker.template.Configuration freeMarkerConfiguration,
+                                                     Map<Object, Object> commonPropertiesMap) throws IOException {
+
+        File directory = new File(templatePath);
+        String dirAbsolutePath = directory.getAbsolutePath();
+
+        List<File> files = DirectoryUtil.getAllFiles(templatePath);
+        List<FreemarkerModel> result = new ArrayList<>();
+
+        for (File file : files) {
+
+            if(file.isHidden()) continue;
+
+            String templateRelativePath = file.getAbsolutePath().substring(dirAbsolutePath.length() + 1);
+            if (isIngoredFolder(templateRelativePath) || templateRelativePath.contains("${className}")) continue;
+
+            Template template = freeMarkerConfiguration.getTemplate(templateRelativePath, codeEncoding);
+
+            String fileAbsolutePath = getActualPath(templateRelativePath, commonPropertiesMap);
+            FreemarkerModel outModel = new FreemarkerModel(fileAbsolutePath, template);
+            result.add(outModel);
+        }
+
+        return result;
+    }
+
+    /**
+     * 判断是否是已经忽略的文件夹
+     *
+     * @param templateRelativePath
+     * @return
+     */
+    private boolean isIngoredFolder(String templateRelativePath) {
+
+        String[] iningoredFolders = iningoredFolder.split(",");
+
+        for (String folder : iningoredFolders) {
+            if (!folder.endsWith("/"))
+                folder += "/";
+            if (templateRelativePath.startsWith(folder) || templateRelativePath.contains("/" + folder))
+                return true;
+        }
+
+        return false;
     }
 
 

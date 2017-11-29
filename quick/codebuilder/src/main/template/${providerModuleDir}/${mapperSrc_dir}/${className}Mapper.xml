@@ -33,7 +33,7 @@
         <set>
             <#list table.columns as column>
             <#if (!column.primaryKey && !column.autoIncrement)>
-            <if test="${column.columnFieldNameFirstLower} != null">
+            <if test="model.${column.columnFieldNameFirstLower} != null">
                 ${table.tableName}.${column.columnName} = <@mapperEl 'model.' + column.columnFieldNameFirstLower/><#if column_has_next>,</#if>
             </if>
             </#if>
