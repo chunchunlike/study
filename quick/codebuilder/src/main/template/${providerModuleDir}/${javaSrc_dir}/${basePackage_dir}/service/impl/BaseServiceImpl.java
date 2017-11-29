@@ -1,13 +1,17 @@
 package ${basePackage}.service.impl;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.Serializable;
 import java.util.List;
 
-@Transactional
-public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+import org.xi.filemanager.mapper.BaseMapper;
+
+@Transactional
+public class BaseServiceImpl<T extends Serializable> implements BaseMapper<T> {
+
+    @Autowired
     protected BaseMapper<T> mapper;
 
     /**
@@ -50,7 +54,7 @@ public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
      * @return
      */
     @Override
-    int deleteByCondition(T condition) {
+    public int deleteByCondition(T condition) {
         return this.mapper.deleteByCondition(condition);
     }
 
@@ -61,7 +65,7 @@ public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
      * @return
      */
     @Override
-    int updateByPk(T model) {
+    public int updateByPk(T model) {
         return this.mapper.updateByPk(model);
     }
 
@@ -73,7 +77,7 @@ public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
      * @return
      */
     @Override
-    int updateByCondition(T model, T condition) {
+    public int updateByCondition(T model, T condition) {
         return this.mapper.updateByCondition(model, condition);
     }
 
@@ -85,7 +89,7 @@ public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
      */
     @Transactional(readOnly = true)
     @Override
-    T getByPk(Object pk) {
+    public T getByPk(Object pk) {
         return this.mapper.getByPk(pk);
     }
 
@@ -97,7 +101,7 @@ public class BaseServiceImpl implements BaseMapper<T extends Serializable> {
      */
     @Transactional(readOnly = true)
     @Override
-    List<T> findByCondition(T condition) {
+    public List<T> findByCondition(T condition) {
         return this.mapper.findByCondition(condition);
     }
 

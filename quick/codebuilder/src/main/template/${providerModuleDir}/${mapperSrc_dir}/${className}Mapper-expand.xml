@@ -6,17 +6,17 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <!-- 存放手写的sql -->
-<mapper namespace="${basePackage}.dao.${className}Mapper">
+<mapper namespace="${basePackage}.mapper.${className}Mapper">
 
-    <resultMap id="BaseResultMapVo" type="${basePackage}.model.${className}">
+    <resultMap id="BaseResultMapVo" type="${basePackage}.entity.${className}Entity">
     <#list table.columns as column>
         <result property="${column.columnFieldNameFirstLower}" column="${column.columnName}"/>
     </#list>
     </resultMap>
     <resultMap id="ResultMapVo" extends="BaseResultMapVo" type="${basePackage}.vo.${className}Vo"></resultMap>
 
-    <parameterMap id="ParameterMap" type="${basePackage}.model.${className}"></parameterMap>
-    <parameterMap id="SelectParameterMap" type="${basePackage}.parameter.${className}SelectParameter"></parameterMap>
+    <parameterMap id="ParameterMap" type="${basePackage}.entity.${className}Entity"></parameterMap>
+    <parameterMap id="SelectParameterMap" type="${basePackage}.parameter.select.${className}SelectParameter"></parameterMap>
 
     <select id="get${className}ById" resultMap="ResultMapVo" parameterType="java.lang.${primaryKeyColumn.columnFieldType}">
         SELECT DISTINCT

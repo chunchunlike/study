@@ -4,15 +4,15 @@
 
 package ${basePackage}.service;
 
+import java.util.List;
+
 import org.xi.common.model.Pagination;
-import ${basePackage}.model.${className};
+import ${basePackage}.entity.${className}Entity;
 import ${basePackage}.parameter.select.${className}SelectParameter;
 import ${basePackage}.vo.${className}Vo;
 
-import java.util.List;
-
 <#include "/include/java_copyright.ftl">
-public interface ${className}Service {
+public interface ${className}Service extends BaseService<${className}Entity> {
 
     /**
      * 添加
@@ -21,7 +21,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} add${className}(${className} ${classNameLower});
+    int add${className}(${className}Entity ${classNameLower});
 
     /**
      * 添加列表
@@ -30,7 +30,7 @@ public interface ${className}Service {
      * @return
     <#include "/include/author_info1.ftl">
      */
-    ${className} add${className}List(List<${className}> ${classNameLower}List);
+    int add${className}List(List<${className}Entity> ${classNameLower}List);
 
     /**
      * 根据主键更新
@@ -39,7 +39,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} update${className}(${className} ${classNameLower});
+    int update${className}(${className}Entity ${classNameLower});
     <#if table.hasIsActive>
 
     /**
@@ -49,7 +49,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} enable${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
+    int enable${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
 
     /**
      * 根据主键列表使之有效
@@ -58,7 +58,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} enable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks);
+    int enable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks);
 
     /**
      * 根据主键使之无效
@@ -67,7 +67,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} disable${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
+    int disable${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
 
     /**
      * 根据主键列表使之无效
@@ -76,7 +76,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} disable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks);
+    int disable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks);
     </#if>
 
     /**
@@ -86,7 +86,7 @@ public interface ${className}Service {
      * @return
      <#include "/include/author_info1.ftl">
      */
-    ${className} delete${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
+    int delete${className}ByPk(${primaryKeyColumn.columnFieldType} pk);
 
     /**
      * 根据主键获取

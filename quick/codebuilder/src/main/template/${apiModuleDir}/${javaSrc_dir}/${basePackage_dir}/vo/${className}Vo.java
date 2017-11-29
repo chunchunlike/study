@@ -1,8 +1,8 @@
 package ${basePackage}.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.io.Serializable;
 
 <#include "/include/java_copyright.ftl">
 public class ${table.tableClassName}Vo implements Serializable {
@@ -19,14 +19,14 @@ public class ${table.tableClassName}Vo implements Serializable {
     /**
     * 设置${column.columnComment}
     */
-    private void set${column.columnFieldName}(${column.columnFieldType} ${column.columnFieldNameFirstLower}) {
+    public void set${column.columnFieldName}(${column.columnFieldType} ${column.columnFieldNameFirstLower}) {
         this.${column.columnFieldNameFirstLower} = ${column.columnFieldNameFirstLower};
     }
 
     /**
     * 获取${column.columnComment}
     */
-    private ${column.columnFieldType} get${column.columnFieldName}() {
+    public ${column.columnFieldType} get${column.columnFieldName}() {
         return this.${column.columnFieldNameFirstLower};
     }
 

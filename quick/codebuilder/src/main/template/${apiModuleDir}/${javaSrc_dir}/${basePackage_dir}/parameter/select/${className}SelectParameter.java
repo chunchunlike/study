@@ -4,28 +4,12 @@ package ${basePackage}.parameter.select;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 <#include "/include/java_copyright.ftl">
-public class ${className}SelectParameter implements Serializable {
+public class ${className}SelectParameter extends BaseSelectParameter implements Serializable {
 
     public ${className}SelectParameter() {
-        orderByMap = new HashMap<String, String>();
-    }
-
-    private Map<String, String> orderByMap;
-
-    public String getOrderBy() {
-        int size = orderByMap.size();
-        if (size == 0) {
-            return null;
-        }
-        String orderBy = orderByMap
-                .entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + " " + entry.getValue())
-                .collect(Collectors.joining(", "));
-        return orderBy;
+        super();
     }
     <#list table.columns as column>
 
@@ -169,11 +153,11 @@ public class ${className}SelectParameter implements Serializable {
     </#if>
 
     public void set${column.columnFieldName}Asc() {
-        orderByMap.put("${column.tableName}.${column.columnName}", "ASC");
+        super.orderByMap.put("${column.tableName}.${column.columnName}", "ASC");
     }
 
     public void set${column.columnFieldName}Desc() {
-        orderByMap.put("${column.tableName}.${column.columnName}", "DESC");
+        super.orderByMap.put("${column.tableName}.${column.columnName}", "DESC");
     }
 
     //endregion

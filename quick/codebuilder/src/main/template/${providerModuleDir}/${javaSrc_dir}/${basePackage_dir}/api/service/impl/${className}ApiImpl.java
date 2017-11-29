@@ -1,22 +1,22 @@
 <#assign className = table.tableClassName>
 <#assign classNameLower = table.tableClassNameFirstLower>
 <#assign primaryKeyColumn = table.primaryKey>
-
 package ${basePackage}.api.service.impl;
 
-import org.xi.common.model.Result;
-import org.xi.common.model.Pagination;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xi.common.model.Result;
+import org.xi.common.model.Pagination;
+import org.xi.common.utils.LogUtil;
+
 import ${basePackage}.api.service.${className}Api;
-import ${basePackage}.model.${className};
+import ${basePackage}.entity.${className}Entity;
 import ${basePackage}.parameter.select.${className}SelectParameter;
 import ${basePackage}.service.${className}Service;
 import ${basePackage}.vo.${className}Vo;
-
-import java.util.List;
 
 <#include "/include/java_copyright.ftl">
 @Service("${className}Api")
@@ -36,7 +36,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> add${className}(${className} ${classNameLower}, String sessionId) {
+    public Result<${className}Entity> add${className}(${className}Entity ${classNameLower}, String sessionId) {
         return null;
     }
 
@@ -49,7 +49,7 @@ public class ${className}ApiImpl implements ${className}Api {
     <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> add${className}(List<${className}> ${classNameLower}List, String sessionId) {
+    public Result<${className}Entity> add${className}(List<${className}Entity> ${classNameLower}List, String sessionId) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> update${className}(${className} ${classNameLower}, String sessionId) {
+    public Result<${className}Entity> update${className}(${className}Entity ${classNameLower}, String sessionId) {
         return null;
     }
     <#if table.hasIsActive>
@@ -76,7 +76,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> enable${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
+    public Result<${className}Entity> enable${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
         return null;
     }
 
@@ -89,7 +89,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> enable${className}ByIdList(List<${primaryKeyColumn.columnFieldType}> ${primaryKeyColumn.columnFieldNameFirstLower}s, String sessionId) {
+    public Result<${className}Entity> enable${className}ByIdList(List<${primaryKeyColumn.columnFieldType}> ${primaryKeyColumn.columnFieldNameFirstLower}s, String sessionId) {
         return null;
     }
 
@@ -102,7 +102,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> disable${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
+    public Result<${className}Entity> disable${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
         return null;
     }
 
@@ -115,7 +115,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> disable${className}ByIdList(List<${primaryKeyColumn.columnFieldType}> ${primaryKeyColumn.columnFieldNameFirstLower}s, String sessionId) {
+    public Result<${className}Entity> disable${className}ByIdList(List<${primaryKeyColumn.columnFieldType}> ${primaryKeyColumn.columnFieldNameFirstLower}s, String sessionId) {
         return null;
     }
     </#if>
@@ -129,7 +129,7 @@ public class ${className}ApiImpl implements ${className}Api {
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public Result<${className}> delete${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
+    public Result<${className}Entity> delete${className}ById(${primaryKeyColumn.columnFieldType} ${primaryKeyColumn.columnFieldNameFirstLower}, String sessionId) {
         return null;
     }
 

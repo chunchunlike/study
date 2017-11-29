@@ -4,12 +4,6 @@
 
 package ${basePackage}.service.impl;
 
-import org.xi.common.model.Pagination;
-import ${basePackage}.mapper.${className}Mapper;
-import ${basePackage}.model.${className};
-import ${basePackage}.parameter.select.${className}SelectParameter;
-import ${basePackage}.vo.${className}Vo;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -19,10 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.xi.common.model.Pagination;
+import ${basePackage}.mapper.${className}Mapper;
+import ${basePackage}.entity.${className}Entity;
+import ${basePackage}.parameter.select.${className}SelectParameter;
+import ${basePackage}.service.${className}Service;
+import ${basePackage}.vo.${className}Vo;
+
 <#include "/include/java_copyright.ftl">
 @Service("${classNameLower}Service")
 @Transactional
-public class ${className}ServiceImpl extends BaseServiceImpl<${className}> implements ${className}Service {
+public class ${className}ServiceImpl extends BaseServiceImpl<${className}Entity> implements ${className}Service {
 
     @Autowired
     private ${className}Mapper ${classNameLower}Mapper;
@@ -35,7 +36,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} add${className}(${className} ${classNameLower}) {
+    public int add${className}(${className}Entity ${classNameLower}) {
         return super.insert(${classNameLower});
     }
 
@@ -47,8 +48,8 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
     <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} add${className}List(List<${className}> ${classNameLower}List) {
-        return super.insertList(${classNameLower}s);
+    public int add${className}List(List<${className}Entity> ${classNameLower}List) {
+        return super.insertList(${classNameLower}List);
     }
 
     /**
@@ -59,8 +60,8 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} update${className}(${className} ${classNameLower}) {
-        return super.update(${classNameLower});
+    public int update${className}(${className}Entity ${classNameLower}) {
+        return super.updateByPk(${classNameLower});
     }
     <#if table.hasIsActive>
 
@@ -72,10 +73,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} enable${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
-        ${className} ${classNameLower} = new ${className}();
-        ${classNameLower}.set${primaryKeyColumn.columnFieldName}(pk);
-        ${classNameLower}.setIsActive(1);
+    public int enable${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
+        ${className}Entity entity = new ${className}Entity();
+        entity.set${primaryKeyColumn.columnFieldName}(pk);
+        entity.setIsActive(1);
         return super.update(${classNameLower});
     }
 
@@ -87,7 +88,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} enable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks) {
+    public int enable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks) {
         return null;
     }
 
@@ -99,10 +100,10 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} disable${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
-        ${className} ${classNameLower} = new ${className}();
-        ${classNameLower}.set${primaryKeyColumn.columnFieldName}(pk);
-        ${classNameLower}.setIsActive(0);
+    public int disable${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
+        ${className}Entity entity = new ${className}Entity();
+        entity.set${primaryKeyColumn.columnFieldName}(pk);
+        entity.setIsActive(0);
         return super.update(${classNameLower});
     }
 
@@ -114,7 +115,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} disable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks) {
+    public int disable${className}ByPkList(List<${primaryKeyColumn.columnFieldType}> pks) {
         return null;
     }
     </#if>
@@ -127,7 +128,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    public ${className} delete${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
+    public int delete${className}ByPk(${primaryKeyColumn.columnFieldType} pk) {
         return super.deleteByPk(pk);
     }
 
@@ -153,7 +154,7 @@ public class ${className}ServiceImpl extends BaseServiceImpl<${className}> imple
      <#include "/include/author_info1.ftl">
      */
     @Override
-    Pagination<${className}Vo> find${className}PageList(${className}SelectParameter parameter, Pagination pagination) {
+    public Pagination<${className}Vo> find${className}PageList(${className}SelectParameter parameter, Pagination pagination) {
 
         //先查询总数量
         PageHelper.startPage(pagination.getPage(), pagination.getPageSize());

@@ -3,18 +3,18 @@
 <#assign primaryKey = table.primaryKey>
 package ${basePackage}.mapper;
 
-import ${basePackage}.model.${className};
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import ${basePackage}.entity.${className}Entity;
 import ${basePackage}.parameter.select.${className}SelectParameter;
 import ${basePackage}.vo.${className}Vo;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
-
 <#include "/include/java_copyright.ftl">
-@Repository
-public interface ${className}Mapper extends BaseMapper<${className}> {
+@Mapper
+public interface ${className}Mapper extends BaseMapper<${className}Entity> {
 
     /**
      * 根据主键获取

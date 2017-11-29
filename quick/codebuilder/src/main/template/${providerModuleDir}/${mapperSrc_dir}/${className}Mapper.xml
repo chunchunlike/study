@@ -5,20 +5,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="${basePackage}.dao.${className}Mapper">
+<mapper namespace="${basePackage}.mapper.${className}Mapper">
 
-    <resultMap id="BaseModelMap" type="${basePackage}.model.${className}">
+    <resultMap id="BaseModelMap" type="${basePackage}.entity.${className}Entity">
         <#list table.columns as column>
         <result property="${column.columnFieldNameFirstLower}" column="${column.columnName}"/>
         </#list>
     </resultMap>
 
-    <parameterMap id="BaseParameterMap" type="${basePackage}.model.${className}"></parameterMap>
+    <parameterMap id="BaseParameterMap" type="${basePackage}.entity.${className}Entity"></parameterMap>
 
     <sql id="selectCondition">
         <where>
             <#list table.columns as column>
-            <if test="${column.columnFieldNameFirstLower} != null">
+            <if test="condition.${column.columnFieldNameFirstLower} != null">
                 <#if (column_index > 0)>AND </#if>${table.tableName}.${column.columnName} = <@mapperEl 'condition.' + column.columnFieldNameFirstLower/>
             </if>
             </#list>
@@ -46,20 +46,20 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
         <#list table.columns as column>
             <#if !column.autoIncrement>
-            <if test="${column.columnFieldNameFirstLower} != null">${column.columnName},</if>
+            <if test="model.${column.columnFieldNameFirstLower} != null">${column.columnName},</if>
             </#if>
         </#list>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
         <#list table.columns as column>
             <#if !column.autoIncrement>
-                <if test="${column.columnFieldNameFirstLower} != null"><@mapperEl 'model.' + column.columnFieldNameFirstLower/>,</if>
+                <if test="model.${column.columnFieldNameFirstLower} != null"><@mapperEl 'model.' + column.columnFieldNameFirstLower/>,</if>
             </#if>
         </#list>
         </trim>
     </insert>
 
-    <insert id="insert">
+    <insert id="insertList">
         <foreach collection="list" item="item" index="index" separator=",">
             insert into ${table.tableName}
             <trim prefix="(" suffix=")" suffixOverrides=",">
