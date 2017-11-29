@@ -1,21 +1,13 @@
 package org.xi.quick.codebuilder;
 
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.xi.quick.codebuilder.model.FreemarkerModel;
-import org.xi.quick.codebuilder.model.TableModel;
+import org.xi.quick.codebuilder.service.GeneratorService;
 import org.xi.quick.codebuilder.service.TableService;
-import org.xi.quick.codebuilder.utils.FileUtil;
-import org.xi.quick.codebuilder.utils.FreemarkerUtil;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootApplication
 public class CodebuilderApplication implements CommandLineRunner {
@@ -24,132 +16,116 @@ public class CodebuilderApplication implements CommandLineRunner {
         SpringApplication.run(CodebuilderApplication.class, args);
     }
 
-    @Value("${codeEncoding}")
-    String codeEncoding;
-
-    @Autowired
-    List<FreemarkerModel> allTemplates;
-
-    @Autowired
-    List<FreemarkerModel> allOnceTemplates;
-
-    @Autowired
-    Map<Object, Object> commonPropertiesMap;
-
     @Autowired
     TableService tableService;
 
+    @Autowired
+    GeneratorService generatorService;
+
     @Override
     public void run(String... strings) throws Exception {
-        generateAllOnce();
-        generateAll();
-    }
 
-    /**
-     * 生成所有生成一次的类
-     *
-     * @throws IOException
-     * @throws TemplateException
-     */
-    void generateAllOnce() throws IOException, TemplateException {
+        Set<String> tableNameSet = tableService.getTableNameList();
 
-        for (FreemarkerModel template : allOnceTemplates) {
-            Map<Object, Object> dataModel = new HashMap<>();
-            dataModel.putAll(commonPropertiesMap);
-            FreemarkerUtil.generate(template, dataModel, codeEncoding);
-        }
-    }
+        Scanner sc = new Scanner(System.in);
 
-    /**
-     * 生成所有数据类
-     *
-     * @throws IOException
-     * @throws TemplateException
-     */
-    void generateAll() throws IOException, TemplateException {
-
-        //生成所有基类
-        generateAllOnce();
-
-        List<TableModel> tables = tableService.getTables(null);
-
-        for (TableModel table : tables) {
-            generate(table);
-        }
-    }
-
-    /**
-     * 生成数据类
-     *
-     * @param tableNames
-     * @throws IOException
-     * @throws TemplateException
-     */
-    void generate(String... tableNames) throws IOException, TemplateException {
-
-        for (String tableName : tableNames) {
-
-            List<TableModel> tables = tableService.getTables(tableName);
-            if (tables == null || tables.isEmpty()) {
-                System.out.println("表" + tableName + "不存在");
-                return;
-            }
-            for (TableModel table : tables) {
-                System.out.println("============================================");
-                System.out.println(table.getTableName());
-                generate(table);
+        printUsages();
+        while (sc.hasNextLine()) {
+            try {
+                processLine(sc, tableNameSet);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                printUsages();
             }
         }
     }
 
-    void generate(TableModel model) throws IOException, TemplateException {
 
-        for (FreemarkerModel template : allTemplates) {
-            Map<Object, Object> dataModel = new HashMap<>();
-            dataModel.putAll(commonPropertiesMap);
-            dataModel.put("table", model);
-            FreemarkerUtil.generate(template, model.getTableClassName(), dataModel, codeEncoding);
+    private void processLine(Scanner sc, Set<String> tableNameSet) throws Exception {
+        String cmd = sc.next();
+        if ("gen".equals(cmd)) {
+            String[] args = getArgs(sc);
+            if (args.length == 0) return;
+            operate(tableNameSet, args, OperateEnum.Generate);
+        } else if ("del".equals(cmd)) {
+            String[] args = getArgs(sc);
+            if (args.length == 0) return;
+            operate(tableNameSet, args, OperateEnum.Delete);
+        } else if ("quit".equals(cmd) || "q".equals(cmd)) {
+            System.exit(0);
+        } else {
+            System.err.println("[错误] 未知命令:" + cmd);
         }
     }
 
-    /**
-     * 删除数据类
-     *
-     * @param tableNames
-     */
-    void delete(String... tableNames) {
+    private void operate(Set<String> tableNameSet, String[] tables, OperateEnum operateEnum) {
 
-        for (String tableName : tableNames) {
+        List<String> tableListNotExist = new ArrayList<>();
 
-            List<TableModel> tables = tableService.getTables(tableName);
-            for (TableModel table : tables) {
-                for (FreemarkerModel template : allTemplates) {
-                    FreemarkerUtil.delete(template, table.getTableClassName());
+        for (String table : tables) {
+            if (table.equals("*")) {
+                for (String tableName : tableNameSet) {
+                    if (operateEnum.equals(OperateEnum.Generate)) {
+                        generatorService.generate(tableName);
+                    } else {
+                        generatorService.delete(tableName);
+                    }
+                }
+                break;
+            } else if (table.equals("base")) {
+                if (operateEnum.equals(OperateEnum.Generate)) {
+                    generatorService.generateAllOnce();
+                } else {
+                    generatorService.deleteAllOnce();
+                }
+            } else if (table.equals("aggregate")) {
+                if (operateEnum.equals(OperateEnum.Generate)) {
+                    generatorService.generateAllOnce();
+                } else {
+                    generatorService.deleteAllOnce();
+                }
+            } else if (!tableNameSet.contains(table)) {
+                tableListNotExist.add(table);
+            } else {
+                if (operateEnum.equals(OperateEnum.Generate)) {
+                    generatorService.generate(table);
+                } else {
+                    generatorService.delete(table);
                 }
             }
         }
-    }
 
-    /**
-     * 删除所有数据类
-     */
-    void deleteAll() {
-
-        List<TableModel> tables = tableService.getTables(null);
-        for (TableModel table : tables) {
-            for (FreemarkerModel template : allTemplates) {
-                FreemarkerUtil.delete(template, table.getTableClassName());
-            }
+        if (!tableListNotExist.isEmpty()) {
+            System.out.println("表" + String.join(",", tableListNotExist) + "不存在");
         }
     }
 
-    /**
-     * 删除所有生成一次的类
-     */
-    void deleteAllOnce() {
+    private static void printUsages() {
+        System.out.println("操作说明:");
+        System.out.println("\tgen/del base :                生成/删除基本类型的相关文件");
+        System.out.println("\tgen/del aggregate :           生成聚合相关文件");
+        System.out.println("\tgen/del * :                   生成/删除所有表的相关文件");
+        System.out.println("\tgen/del table [table2...]:    根据表名生成/删除相关文件");
+        System.out.println("\texit/quit/q :                 退出");
+        System.out.print("请输入命令:");
+    }
 
-        for (FreemarkerModel template : allOnceTemplates) {
-            FreemarkerUtil.delete(template);
+    String[] getArgs(Scanner sc) {
+        String line = sc.nextLine();
+        if (line == null) return new String[0];
+        StringTokenizer tokenlizer = new StringTokenizer(line, " ");
+        List result = new ArrayList();
+
+        while (tokenlizer.hasMoreElements()) {
+            Object s = tokenlizer.nextElement();
+            result.add(s);
         }
+        return (String[]) result.toArray(new String[result.size()]);
+    }
+
+    enum OperateEnum {
+        Generate,
+        Delete
     }
 }

@@ -1,6 +1,7 @@
 package org.xi.quick.codebuilder.utils;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -39,5 +40,31 @@ public class StringUtil {
         String[] tableNameSplit = s.split(split);
 
         return String.join("", Arrays.stream(tableNameSplit).map(o -> o.substring(0, 1).toUpperCase() + o.substring(1)).collect(Collectors.toList()));
+    }
+
+    public static <T> String join(String delimiter, Collection<T> collection) {
+
+        return collection.stream()
+                .map(o -> {
+                    if (o == null) return "null";
+                    if (o instanceof String) {
+                        return (String) o;
+                    }
+                    return o.toString();
+                })
+                .collect(Collectors.joining(delimiter));
+    }
+
+    public static <T> String join(String delimiter, T[] collection) {
+
+        return Arrays.stream(collection)
+                .map(o -> {
+                    if (o == null) return "null";
+                    if (o instanceof String) {
+                        return (String) o;
+                    }
+                    return o.toString();
+                })
+                .collect(Collectors.joining(delimiter));
     }
 }

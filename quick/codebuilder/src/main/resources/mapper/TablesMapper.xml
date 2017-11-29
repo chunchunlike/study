@@ -11,6 +11,38 @@
         <result column="TABLE_COMMENT" property="tableComment" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="getAllTableNameList" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+        `TABLE_NAME`
+        FROM
+        TABLES
+        <where>
+            <if test="databaseName != null and databaseName != ''">
+                TABLE_SCHEMA=#{databaseName}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTable" resultMap="resultMap" parameterType="java.lang.String">
+        SELECT
+        `TABLE_CATALOG`,
+        `TABLE_SCHEMA`,
+        `TABLE_NAME`,
+        `TABLE_TYPE`,
+        `TABLE_ROWS`,
+        `TABLE_COMMENT`
+        FROM
+        TABLES
+        <where>
+            <if test="databaseName != null and databaseName != ''">
+                TABLE_SCHEMA=#{databaseName}
+            </if>
+            <if test="tableName != null and tableName != ''">
+                AND TABLE_NAME=#{tableName}
+            </if>
+        </where>
+    </select>
+
     <select id="getTables" resultMap="resultMap" parameterType="java.lang.String">
         SELECT
         `TABLE_CATALOG`,

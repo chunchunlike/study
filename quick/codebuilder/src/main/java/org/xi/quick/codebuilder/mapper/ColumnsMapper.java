@@ -9,5 +9,12 @@ import java.util.List;
 @Mapper
 public interface ColumnsMapper {
 
+    /**
+     * 获取表的列
+     *
+     * @param databaseName
+     * @param tableName
+     * @return
+     */
     List<Column> getColumns(@Param("databaseName") String databaseName, @Param("tableName") String tableName);
 }
