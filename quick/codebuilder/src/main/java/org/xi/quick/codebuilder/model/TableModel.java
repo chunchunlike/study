@@ -77,7 +77,7 @@ public class TableModel {
                         .filter(column -> column.getColumnKey().equals("PRI"))
                         .collect(Collectors.toList());
 
-        return priKeys.get(0);
+        return priKeys.isEmpty() ? null : priKeys.get(0);
     }
 
     public Boolean getHasIsActive() {

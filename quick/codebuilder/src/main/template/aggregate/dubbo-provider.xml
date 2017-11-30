@@ -9,7 +9,7 @@
 
     <!-- ${model.tableComment} -->
     <dubbo:service interface="${basePackage}.api.service.${model.tableClassName}Api"
-                   ref="${model.tableClassNameFirstLower}Api" group="${dubboGroup}" version="${codeVersion}"
+                   ref="${model.tableClassNameFirstLower}Api" group="${dubboServiceGroup}" version="${dubboServiceVersion}"
                    timeout="6000" registry="zookeeper"/>
     </#list>
 

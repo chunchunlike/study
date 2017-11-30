@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.xi.quick.codebuilder.model.FreemarkerModel;
 import org.xi.quick.codebuilder.utils.DirectoryUtil;
+import org.xi.quick.codebuilder.utils.StringUtil;
 
 import java.io.*;
 import java.util.*;
@@ -19,6 +20,9 @@ import java.util.regex.Pattern;
 @Configuration
 @PropertySource("classpath:config.properties")
 public class AppConfig {
+
+    @Value("${spring.datasource.url}")
+    String datasourceUrl;
 
     @Value("${path.template}")
     String templatePath;
@@ -37,6 +41,11 @@ public class AppConfig {
 
     @Value("${file.aggregate}")
     String aggregateFile;
+
+    @Bean(name = "databaseName")
+    public String getDatabaseName() {
+        return StringUtil.getDatabaseNameFromJdbcUrl(datasourceUrl);
+    }
 
     @Bean(name = "commonPropertiesMap")
     public Map<Object, Object> getCommonPropertiesMap() {

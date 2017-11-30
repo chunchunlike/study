@@ -15,7 +15,7 @@
         SELECT
         `TABLE_NAME`
         FROM
-        TABLES
+        information_schema.TABLES
         <where>
             <if test="databaseName != null and databaseName != ''">
                 TABLE_SCHEMA=#{databaseName}
@@ -32,7 +32,7 @@
         `TABLE_ROWS`,
         `TABLE_COMMENT`
         FROM
-        TABLES
+        information_schema.TABLES
         <where>
             <if test="databaseName != null and databaseName != ''">
                 TABLE_SCHEMA=#{databaseName}
@@ -52,7 +52,7 @@
         `TABLE_ROWS`,
         `TABLE_COMMENT`
         FROM
-        TABLES
+        information_schema.TABLES
         <where>
             <if test="databaseName != null and databaseName != ''">
                 TABLE_SCHEMA=#{databaseName}

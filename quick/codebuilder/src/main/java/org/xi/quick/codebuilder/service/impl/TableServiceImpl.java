@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service("tableService")
 public class TableServiceImpl implements TableService {
 
-    @Value("${database.name}")
+    @Autowired
     String databaseName;
 
     @Autowired
