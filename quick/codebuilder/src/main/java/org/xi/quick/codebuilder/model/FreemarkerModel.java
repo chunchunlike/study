@@ -14,6 +14,10 @@ public class FreemarkerModel {
     }
 
     private String absolutePath;
+
+    private String packagePath;
+    private boolean aggregate;
+
     private Template template;
 
     public String getAbsolutePath() {
@@ -26,5 +30,13 @@ public class FreemarkerModel {
 
     public Template getTemplate() {
         return template;
+    }
+
+    public boolean isAggregate() {
+        return aggregate;
+    }
+
+    public void setAggregate(boolean aggregate) {
+        this.aggregate = aggregate;
     }
 }

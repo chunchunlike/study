@@ -2,6 +2,7 @@ package org.xi.quick.codebuilder.config;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.xi.quick.codebuilder.utils.DirectoryUtil;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +34,12 @@ public class AppConfig {
 
     @Value("${folder.ingored}")
     String iningoredFolder;
+
+    @Value("${folder.aggregate}")
+    String aggregateFolder;
+
+    @Value("${file.aggregate}")
+    String aggregateFile;
 
     @Bean(name = "commonPropertiesMap")
     public Map<Object, Object> getCommonPropertiesMap() {
@@ -76,27 +84,10 @@ public class AppConfig {
     public List<FreemarkerModel> getAllTemplates(freemarker.template.Configuration freeMarkerConfiguration,
                                                  Map<Object, Object> commonPropertiesMap) throws IOException {
 
-        File directory = new File(templatePath);
-        String dirAbsolutePath = directory.getAbsolutePath();
-
-        List<File> files = DirectoryUtil.getAllFiles(templatePath);
-        List<FreemarkerModel> result = new ArrayList<>();
-
-        for (File file : files) {
-
-            if(file.isHidden()) continue;
-
-            String templateRelativePath = file.getAbsolutePath().substring(dirAbsolutePath.length() + 1);
-            if (isIngoredFolder(templateRelativePath) || !templateRelativePath.contains("${className}")) continue;
-
-            Template template = freeMarkerConfiguration.getTemplate(templateRelativePath, codeEncoding);
-
-            String fileAbsolutePath = getActualPath(templateRelativePath, commonPropertiesMap);
-            FreemarkerModel outModel = new FreemarkerModel(fileAbsolutePath, template);
-            result.add(outModel);
-        }
-
-        return result;
+        List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
+                templateRelativePath -> templateRelativePath.contains("${className}")
+                        && !isMatchingFolder(templateRelativePath, iningoredFolder));
+        return templates;
     }
 
     /**
@@ -109,6 +100,42 @@ public class AppConfig {
     public List<FreemarkerModel> getAllOnceTemplates(freemarker.template.Configuration freeMarkerConfiguration,
                                                      Map<Object, Object> commonPropertiesMap) throws IOException {
 
+        List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
+                templateRelativePath -> !templateRelativePath.contains("${className}")
+                        && !isMatchingFolder(templateRelativePath, iningoredFolder)
+                        && !isMatchingFolder(templateRelativePath, aggregateFolder));
+        return templates;
+    }
+
+    /**
+     * 所有聚合的模版
+     *
+     * @return
+     * @throws IOException
+     */
+    @Bean(name = "allAggregateTemplates")
+    public List<FreemarkerModel> getAllAggregateTemplates(freemarker.template.Configuration freeMarkerConfiguration,
+                                                          Map<Object, Object> commonPropertiesMap) throws IOException {
+
+        List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
+                templateRelativePath -> isMatchingFolder(templateRelativePath, aggregateFolder));
+        return templates;
+    }
+
+
+    /**
+     * 获取匹配的模版
+     *
+     * @param freeMarkerConfiguration
+     * @param commonPropertiesMap
+     * @param predicate
+     * @return
+     * @throws IOException
+     */
+    public List<FreemarkerModel> getMatchingTemplates(freemarker.template.Configuration freeMarkerConfiguration,
+                                                      Map<Object, Object> commonPropertiesMap,
+                                                      Predicate<String> predicate) throws IOException {
+
         File directory = new File(templatePath);
         String dirAbsolutePath = directory.getAbsolutePath();
 
@@ -117,15 +144,17 @@ public class AppConfig {
 
         for (File file : files) {
 
-            if(file.isHidden()) continue;
+            if (file.isHidden()) continue;
 
             String templateRelativePath = file.getAbsolutePath().substring(dirAbsolutePath.length() + 1);
-            if (isIngoredFolder(templateRelativePath) || templateRelativePath.contains("${className}")) continue;
+            if (!predicate.test(templateRelativePath)) continue;
 
             Template template = freeMarkerConfiguration.getTemplate(templateRelativePath, codeEncoding);
 
             String fileAbsolutePath = getActualPath(templateRelativePath, commonPropertiesMap);
             FreemarkerModel outModel = new FreemarkerModel(fileAbsolutePath, template);
+            outModel.setAggregate(isMatchingFile(templateRelativePath, aggregateFile));
+
             result.add(outModel);
         }
 
@@ -133,19 +162,39 @@ public class AppConfig {
     }
 
     /**
-     * 判断是否是已经忽略的文件夹
+     * 是否是匹配的文件夹
      *
      * @param templateRelativePath
      * @return
      */
-    private boolean isIngoredFolder(String templateRelativePath) {
+    private boolean isMatchingFolder(String templateRelativePath, String folders) {
 
-        String[] iningoredFolders = iningoredFolder.split(",");
+        String[] folderArr = folders.split(",");
 
-        for (String folder : iningoredFolders) {
+        for (String folder : folderArr) {
             if (!folder.endsWith("/"))
                 folder += "/";
             if (templateRelativePath.startsWith(folder) || templateRelativePath.contains("/" + folder))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否是匹配模版
+     *
+     * @param templateRelativePath
+     * @return
+     */
+    private boolean isMatchingFile(String templateRelativePath, String files) {
+
+        String[] fileArr = files.split(",");
+
+        for (String filePath : fileArr) {
+            if (!filePath.endsWith(".java"))
+                filePath += ".java";
+            if (templateRelativePath.endsWith(filePath))
                 return true;
         }
 
