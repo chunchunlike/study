@@ -34,45 +34,13 @@ public class GeneratorServiceImpl implements GeneratorService {
     List<FreemarkerModel> allOnceTemplates;
 
     @Autowired
+    List<FreemarkerModel> allAggregateTemplates;
+
+    @Autowired
     Map<Object, Object> commonPropertiesMap;
 
     @Autowired
     TableService tableService;
-
-
-    //region 生成一次的类
-
-    /**
-     * 生成所有生成一次的类
-     */
-    @Override
-    public void generateAllOnce() {
-
-        for (FreemarkerModel template : allOnceTemplates) {
-            Map<Object, Object> dataModel = new HashMap<>();
-            dataModel.putAll(commonPropertiesMap);
-            try {
-                FreemarkerUtil.generate(template, dataModel, codeEncoding);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 删除所有生成一次的类
-     */
-    @Override
-    public void deleteAllOnce() {
-
-        for (FreemarkerModel template : allOnceTemplates) {
-            FreemarkerUtil.delete(template);
-        }
-    }
-
-    //endregion
 
     /**
      * 生成所有数据类
@@ -93,6 +61,30 @@ public class GeneratorServiceImpl implements GeneratorService {
     }
 
     /**
+     * 生成所有生成一次的类
+     */
+    @Override
+    public void generateAllOnce() {
+
+        Map<Object, Object> dataModel = new HashMap<>();
+        dataModel.putAll(commonPropertiesMap);
+        generateOnce(allOnceTemplates, dataModel);
+    }
+
+    /**
+     * 生成所有聚合类
+     */
+    @Override
+    public void generateAllAggregate() {
+
+        List<TableModel> tables = tableService.getTables(null);
+        Map<Object, Object> dataModel = new HashMap<>();
+        dataModel.putAll(commonPropertiesMap);
+        dataModel.put("tableModels", tables);
+        generateOnce(allAggregateTemplates, dataModel);
+    }
+
+    /**
      * 删除所有数据类
      */
     @Override
@@ -108,6 +100,28 @@ public class GeneratorServiceImpl implements GeneratorService {
     @Override
     public void delete(String... tableNames) {
         dataLoop((template, table) -> FreemarkerUtil.delete(template, table.getTableClassName()), tableNames);
+    }
+
+    /**
+     * 删除所有生成一次的类
+     */
+    @Override
+    public void deleteAllOnce() {
+
+        for (FreemarkerModel template : allOnceTemplates) {
+            FreemarkerUtil.delete(template);
+        }
+    }
+
+    /**
+     * 删除所有聚合类
+     */
+    @Override
+    public void deleteAllAggregate() {
+
+        for (FreemarkerModel template : allAggregateTemplates) {
+            FreemarkerUtil.delete(template);
+        }
     }
 
     private void generate(FreemarkerModel template, TableModel table) {
@@ -143,6 +157,19 @@ public class GeneratorServiceImpl implements GeneratorService {
         for (TableModel table : tables) {
             for (FreemarkerModel template : allTemplates) {
                 consumer.accept(template, table);
+            }
+        }
+    }
+
+    private void generateOnce(List<FreemarkerModel> templates, Map<Object, Object> dataModel) {
+
+        for (FreemarkerModel template : templates) {
+            try {
+                FreemarkerUtil.generate(template, dataModel, codeEncoding);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TemplateException e) {
+                e.printStackTrace();
             }
         }
     }

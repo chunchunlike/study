@@ -81,9 +81,9 @@ public class CodebuilderApplication implements CommandLineRunner {
                 }
             } else if (table.equals("aggregate")) {
                 if (operateEnum.equals(OperateEnum.Generate)) {
-                    generatorService.generateAllOnce();
+                    generatorService.generateAllAggregate();
                 } else {
-                    generatorService.deleteAllOnce();
+                    generatorService.deleteAllAggregate();
                 }
             } else if (!tableNameSet.contains(table)) {
                 tableListNotExist.add(table);

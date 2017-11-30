@@ -35,9 +35,6 @@ public class AppConfig {
     @Value("${folder.ingored}")
     String iningoredFolder;
 
-    @Value("${folder.aggregate}")
-    String aggregateFolder;
-
     @Value("${file.aggregate}")
     String aggregateFile;
 
@@ -86,7 +83,8 @@ public class AppConfig {
 
         List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
                 templateRelativePath -> templateRelativePath.contains("${className}")
-                        && !isMatchingFolder(templateRelativePath, iningoredFolder));
+                        && !isMatchingFolder(templateRelativePath, iningoredFolder)
+                        && !isMatchingFile(templateRelativePath, aggregateFile));
         return templates;
     }
 
@@ -103,7 +101,7 @@ public class AppConfig {
         List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
                 templateRelativePath -> !templateRelativePath.contains("${className}")
                         && !isMatchingFolder(templateRelativePath, iningoredFolder)
-                        && !isMatchingFolder(templateRelativePath, aggregateFolder));
+                        && !isMatchingFile(templateRelativePath, aggregateFile));
         return templates;
     }
 
@@ -118,7 +116,7 @@ public class AppConfig {
                                                           Map<Object, Object> commonPropertiesMap) throws IOException {
 
         List<FreemarkerModel> templates = getMatchingTemplates(freeMarkerConfiguration, commonPropertiesMap,
-                templateRelativePath -> isMatchingFolder(templateRelativePath, aggregateFolder));
+                templateRelativePath -> isMatchingFile(templateRelativePath, aggregateFile));
         return templates;
     }
 
@@ -153,7 +151,6 @@ public class AppConfig {
 
             String fileAbsolutePath = getActualPath(templateRelativePath, commonPropertiesMap);
             FreemarkerModel outModel = new FreemarkerModel(fileAbsolutePath, template);
-            outModel.setAggregate(isMatchingFile(templateRelativePath, aggregateFile));
 
             result.add(outModel);
         }
@@ -192,9 +189,7 @@ public class AppConfig {
         String[] fileArr = files.split(",");
 
         for (String filePath : fileArr) {
-            if (!filePath.endsWith(".java"))
-                filePath += ".java";
-            if (templateRelativePath.endsWith(filePath))
+            if (templateRelativePath.endsWith("/" + filePath))
                 return true;
         }
 
